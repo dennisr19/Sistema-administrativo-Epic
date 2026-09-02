@@ -1,29 +1,25 @@
 "use client"
 
 import { usePathname, useRouter } from "next/navigation"
-import { use, useOptimistic, useState, useTransition } from "react"
-import { ListPagination } from "@/components/list-pagination"
+import { Suspense, useOptimistic, useState, useTransition } from "react"
 import { PageHeader } from "@/components/page-header"
-import { AlertFilters } from "@/components/today/alert-filters"
-import { DesktopReservationTable } from "@/components/today/desktop-reservation-table"
-import { MobileReservationList } from "@/components/today/mobile-reservation-list"
-import { OperationEmpty } from "@/components/today/operation-empty"
 import { OperationFilterBar } from "@/components/today/operation-filter-bar"
 import { OperationFilterSheet } from "@/components/today/operation-filter-sheet"
 import { OperationPeriodTabs } from "@/components/today/operation-period-tabs"
 import { ReservationDetailSheet } from "@/components/today/reservation-detail-sheet"
-import { TodayToolbar } from "@/components/today/today-toolbar"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card"
 import {
-  defaultOperationFilters,
-  filterReservations,
-  type OperationFilters,
-} from "@/lib/operation-filters"
+  AlertsFallback,
+  CountFallback,
+  ListFallback,
+  TodayAlerts,
+  TodayCount,
+  TodayList,
+} from "@/components/today/today-blocks"
+import { TodayToolbar } from "@/components/today/today-toolbar"
+import { Card, CardDescription, CardHeader } from "@/components/ui/card"
+import { defaultOperationFilters, type OperationFilters } from "@/lib/operation-filters"
 import type { OperationalIssue, Reservation, TimeRange } from "@/lib/reservation"
 import { type DayRange, matchPreset, presetRange } from "@/lib/today"
-import { cn } from "@/lib/utils"
-
-const pageSize = 6
 
 type TodayOperationsProps = {
   reservationsPromise: Promise<Reservation[]>
@@ -32,6 +28,11 @@ type TodayOperationsProps = {
   dateLabel: string
 }
 
+/**
+ * No hace `use()` de la promesa a este nivel: el encabezado, las pestañas de
+ * periodo y la barra de filtros pintan de inmediato, y solo los bloques que
+ * de verdad esperan datos —tarjetas, avisos y la lista— muestran skeleton.
+ */
 export function TodayOperations({
   reservationsPromise,
   range: dayRange,
@@ -40,7 +41,6 @@ export function TodayOperations({
 }: TodayOperationsProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const reservations = use(reservationsPromise)
   const [pending, startTransition] = useTransition()
   // El tab y el control de fecha responden al clic, no a que D1 conteste: se
   // adelantan al valor que se está pidiendo mientras la navegación real
@@ -53,21 +53,6 @@ export function TodayOperations({
   const [filters, setFilters] = useState<OperationFilters>(defaultOperationFilters)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [page, setPage] = useState(1)
-
-  const reservationsInContext = filterReservations(reservations, filters)
-  const counts = reservationsInContext.reduce<Record<OperationalIssue, number>>(
-    (total, reservation) => {
-      if (reservation.issue) total[reservation.issue] += 1
-      return total
-    },
-    { guide: 0, driver: 0, payment: 0 },
-  )
-  const filtered = activeIssue
-    ? reservationsInContext.filter((reservation) => reservation.issue === activeIssue)
-    : reservationsInContext
-  const filteredPax = filtered.reduce((total, reservation) => total + reservation.pax, 0)
-  const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize))
-  const visibleReservations = filtered.slice((page - 1) * pageSize, page * pageSize)
 
   // El rango vive en la URL: es el servidor quien trae esas salidas.
   const selectDays = (next: DayRange) => {
@@ -97,6 +82,8 @@ export function TodayOperations({
     setPage(1)
   }
 
+  const block = { promise: reservationsPromise, filters, activeIssue, page }
+
   return (
     <div className="grid h-full min-h-0 grid-rows-[minmax(0,1fr)] gap-0 md:grid-rows-[auto_auto_minmax(0,1fr)] md:gap-4">
       <PageHeader
@@ -108,8 +95,10 @@ export function TodayOperations({
       <TodayToolbar
         range={range}
         dayRange={optimisticDayRange}
-        reservations={reservationsInContext}
-        counts={counts}
+        promise={reservationsPromise}
+        filters={filters}
+        activeIssue={activeIssue}
+        page={page}
         onSelectRange={selectRange}
         onSelectDays={selectDays}
       />
@@ -121,8 +110,9 @@ export function TodayOperations({
               <h1 className="text-xl font-semibold tracking-[-0.025em] md:hidden">Salidas</h1>
               <h2 className="hidden text-xl font-semibold tracking-[-0.025em] md:block">Salidas</h2>
               <CardDescription className="mt-0.5 text-sm">
-                {filtered.length} {filtered.length === 1 ? "reserva" : "reservas"}, {filteredPax}{" "}
-                {filteredPax === 1 ? "pasajero" : "pasajeros"} en total
+                <Suspense fallback={<CountFallback />}>
+                  <TodayCount {...block} />
+                </Suspense>
               </CardDescription>
             </div>
           </div>
@@ -140,42 +130,27 @@ export function TodayOperations({
             onOpen={() => setFiltersOpen(true)}
           />
 
-          <AlertFilters counts={counts} activeIssue={activeIssue} onSelect={selectIssue} />
+          <Suspense fallback={<AlertsFallback />}>
+            <TodayAlerts {...block} onSelect={selectIssue} />
+          </Suspense>
         </CardHeader>
 
-        <CardContent
-          // Mientras llega el periodo nuevo se atenúa el anterior en vez de vaciarlo.
-          className={cn(
-            "min-h-0 flex-1 overflow-y-auto px-0 transition-opacity",
-            pending && "opacity-60",
-          )}
-          aria-busy={pending}
-        >
-          {visibleReservations.length ? (
-            <>
-              <DesktopReservationTable reservations={visibleReservations} onSelect={setSelected} />
-              <MobileReservationList reservations={visibleReservations} onSelect={setSelected} />
-            </>
-          ) : (
-            <OperationEmpty onClear={clearFilters} />
-          )}
-        </CardContent>
-
-        <CardFooter className="h-14 shrink-0 justify-between bg-surface-muted px-4 py-2 sm:px-6">
-          <span className="shrink-0 text-[13px] whitespace-nowrap text-muted-foreground tabular-nums">
-            {filtered.length
-              ? `${(page - 1) * pageSize + 1}-${Math.min(page * pageSize, filtered.length)} de ${filtered.length}`
-              : "0 reservas"}
-          </span>
-          <ListPagination page={page} pageCount={pageCount} onPageChange={setPage} />
-        </CardFooter>
+        <Suspense fallback={<ListFallback />}>
+          <TodayList
+            {...block}
+            pending={pending}
+            onSelect={setSelected}
+            onClear={clearFilters}
+            onPageChange={setPage}
+          />
+        </Suspense>
       </Card>
 
       <ReservationDetailSheet reservation={selected} onClose={() => setSelected(null)} />
       {filtersOpen ? (
         <OperationFilterSheet
           filters={filters}
-          reservations={reservations}
+          reservationsPromise={reservationsPromise}
           onApply={changeFilters}
           onClose={() => setFiltersOpen(false)}
         />

@@ -1,7 +1,5 @@
 import type { Metadata } from "next"
-import { Suspense } from "react"
 
-import { ReservationsSkeleton } from "@/components/reservations/reservations-skeleton"
 import { ReservationsView } from "@/components/reservations/reservations-view"
 import {
   listReservations,
@@ -24,22 +22,22 @@ export default async function ReservationsPage({
   const [{ organizationId }, params] = await Promise.all([requireSession(), searchParams])
   const { filters, page } = parseReservationParams(params)
 
-  // Las promesas se pasan sin await: el encabezado y los filtros pintan de una
-  // y la tabla llega por streaming cuando D1 responde.
+  // Las promesas se pasan sin await y sin un Suspense que las envuelva a las
+  // tres: cada bloque tiene el suyo dentro de la vista, así que el header y
+  // los filtros pintan de una y cobertura, totales y tabla llegan por
+  // separado, sin que la consulta más lenta bloquee a las otras dos.
   const resultsPromise = listReservations({ organizationId, filters, page })
   const coveragePromise = reservationCoverage(organizationId)
   const totalsPromise = reservationTotals(organizationId, filters)
 
   return (
-    <Suspense fallback={<ReservationsSkeleton />}>
-      <ReservationsView
-        resultsPromise={resultsPromise}
-        coveragePromise={coveragePromise}
-        totalsPromise={totalsPromise}
-        filters={filters}
-        page={page}
-        pageSize={RESERVATIONS_PAGE_SIZE}
-      />
-    </Suspense>
+    <ReservationsView
+      resultsPromise={resultsPromise}
+      coveragePromise={coveragePromise}
+      totalsPromise={totalsPromise}
+      filters={filters}
+      page={page}
+      pageSize={RESERVATIONS_PAGE_SIZE}
+    />
   )
 }

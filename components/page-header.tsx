@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button"
 
 type PageHeaderProps = {
   title: string
-  subtitle: string
+  /** ReactNode y no string: puede llegar suspendido, con su propio fallback. */
+  subtitle: ReactNode
   /** Reemplaza el botón `Nueva reserva`. `null` deja el encabezado sin acción primaria. */
   action?: ReactNode | null
   onNewReservation?: () => void

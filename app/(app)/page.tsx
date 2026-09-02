@@ -1,7 +1,4 @@
-import { Suspense } from "react"
-
 import { TodayOperations } from "@/components/today/today-operations"
-import { TodaySkeleton } from "@/components/today/today-skeleton"
 import { listOperationPeriod } from "@/db/queries/reservations"
 import { requireSession } from "@/lib/auth/server"
 import { formatLongDate } from "@/lib/format-date"
@@ -25,17 +22,15 @@ export default async function Page({
 
   const reservationsPromise = listOperationPeriod(organizationId, range.from, range.to)
 
-  // Sin `key`: con `key` cada cambio de rango montaba un Suspense nuevo, se
-  // tiraba la pantalla y aparecía el esqueleto. Sin él, la transición mantiene
-  // lo anterior hasta que llega lo nuevo.
+  // Sin un Suspense envolvente: los bloques que esperan datos tienen el suyo
+  // dentro de la vista, así que el encabezado y las pestañas de periodo
+  // pintan sin esperar a D1 en vez de esconderse tras un esqueleto entero.
   return (
-    <Suspense fallback={<TodaySkeleton />}>
-      <TodayOperations
-        reservationsPromise={reservationsPromise}
-        range={range}
-        greeting={`Buenos días, ${name.split(" ")[0]}`}
-        dateLabel={formatLongDate(today)}
-      />
-    </Suspense>
+    <TodayOperations
+      reservationsPromise={reservationsPromise}
+      range={range}
+      greeting={`Buenos días, ${name.split(" ")[0]}`}
+      dateLabel={formatLongDate(today)}
+    />
   )
 }

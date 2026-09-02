@@ -1,5 +1,7 @@
 "use client"
 
+import { Suspense, use } from "react"
+
 import { ExportMenu } from "@/components/export-menu"
 import { DateRangeControl } from "@/components/reservations/date-range-control"
 import {
@@ -12,12 +14,31 @@ import { statusOptions } from "@/lib/reservation-filters"
 
 type ReservationsToolbarProps = {
   filters: ReservationFilters
-  totals: ReservationTotals
+  totalsPromise: Promise<ReservationTotals>
   onChange: (patch: Partial<ReservationFilters>) => void
 }
 
+function Stats({ promise }: { promise: Promise<ReservationTotals> }) {
+  return <ReservationStats totals={use(promise)} />
+}
+
+/** Cuatro tarjetas del mismo alto que las reales. */
+function StatsFallback() {
+  return (
+    <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+      {["a", "b", "c", "d"].map((stat) => (
+        <div key={stat} className="h-[68px] animate-pulse rounded-xl bg-muted" />
+      ))}
+    </div>
+  )
+}
+
 /** Solo desktop: en mobile los filtros viven en la barra de búsqueda y su hoja. */
-export function ReservationsToolbar({ filters, totals, onChange }: ReservationsToolbarProps) {
+export function ReservationsToolbar({
+  filters,
+  totalsPromise,
+  onChange,
+}: ReservationsToolbarProps) {
   return (
     <div className="hidden gap-4 md:grid">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -34,7 +55,11 @@ export function ReservationsToolbar({ filters, totals, onChange }: ReservationsT
           <ExportMenu kind="reservas" />
         </div>
       </div>
-      <ReservationStats totals={totals} />
+
+      {/* Los tabs y el rango no esperan a nadie: solo los totales suspenden. */}
+      <Suspense fallback={<StatsFallback />}>
+        <Stats promise={totalsPromise} />
+      </Suspense>
     </div>
   )
 }

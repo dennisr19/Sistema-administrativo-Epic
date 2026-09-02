@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { use, useState } from "react"
 
 import { EntityFilterFields } from "@/components/entity-filter-fields"
 import { FilterSection } from "@/components/filter-section"
@@ -26,17 +26,19 @@ import type { Reservation } from "@/lib/reservation"
 
 type OperationFilterSheetProps = {
   filters: OperationFilters
-  reservations: Reservation[]
+  /** Solo se abre por clic del usuario: para entonces la promesa ya resolvió. */
+  reservationsPromise: Promise<Reservation[]>
   onApply: (filters: OperationFilters) => void
   onClose: () => void
 }
 
 export function OperationFilterSheet({
   filters,
-  reservations,
+  reservationsPromise,
   onApply,
   onClose,
 }: OperationFilterSheetProps) {
+  const reservations = use(reservationsPromise)
   const [draft, setDraft] = useState(filters)
   const activeCount = countActiveFilters(draft)
   const invalidTimeRange = hasInvalidTimeRange(draft)
