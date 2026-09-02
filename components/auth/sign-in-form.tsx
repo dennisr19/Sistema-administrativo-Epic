@@ -30,7 +30,7 @@ export function SignInForm({ notice }: { notice?: string }) {
         <AppMark large />
         <div className="grid gap-2">
           <h1 className="text-[28px] font-semibold tracking-[-0.035em]">
-            {onCodeStep ? "Revisa tu correo" : "Entra a Sistema Administrativo Epic"}
+            {onCodeStep ? "Revisa tu correo" : "Sistema Administrativo Epic"}
           </h1>
           {/* Esta línea no desaparece al escribir, así que hace de instrucción
               permanente y el campo puede ir sin rótulo encima. */}

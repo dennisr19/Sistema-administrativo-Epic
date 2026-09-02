@@ -20,9 +20,7 @@ export function AppLogo() {
   return (
     <div className="flex min-w-0 items-center gap-2.5">
       <AppMark />
-      <span className="truncate text-[19px] font-semibold tracking-[-0.03em]">
-        Sistema Administrativo Epic
-      </span>
+      <span className="truncate text-[19px] font-semibold tracking-[-0.03em]">Sistema Epic</span>
     </div>
   )
 }
