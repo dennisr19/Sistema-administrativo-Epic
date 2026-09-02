@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 export function TodaySkeleton() {
   return (
     <div className="grid h-full min-h-0 grid-rows-[minmax(0,1fr)] gap-0 md:grid-rows-[auto_auto_minmax(0,1fr)] md:gap-4">
-      <div className="hidden h-[68px] md:block" />
+      <div className="hidden h-[76px] md:block" />
 
       <div className="hidden gap-4 md:grid">
         <div className="flex items-center justify-between gap-3">

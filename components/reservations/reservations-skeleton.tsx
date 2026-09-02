@@ -1,11 +1,29 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 
-/** Misma silueta que la tabla real: el salto al llegar los datos es mínimo. */
+/**
+ * Misma silueta que `ReservationsView`: en desktop el header trae abajo una
+ * fila de tabs+fecha y las tarjetas de totales, antes de la tabla. Faltaban
+ * en este esqueleto, así que esa fila entera aparecía de golpe al llegar los
+ * datos reales en vez de solo rellenarse.
+ */
 export function ReservationsSkeleton() {
   return (
-    <div className="grid h-full min-h-0 grid-rows-[minmax(0,1fr)] gap-0 md:grid-rows-[auto_minmax(0,1fr)] md:gap-5">
+    <div className="grid h-full min-h-0 grid-rows-[minmax(0,1fr)] gap-0 md:grid-rows-[auto_auto_minmax(0,1fr)] md:gap-4">
       <div className="hidden h-[76px] md:block" />
-      <Card className="min-h-0 gap-0 rounded-xl border-0 py-0">
+
+      <div className="hidden gap-4 md:grid">
+        <div className="flex items-center justify-between gap-3">
+          <div className="h-9 w-72 animate-pulse rounded-full bg-muted" />
+          <div className="h-11 w-56 animate-pulse rounded-lg bg-muted" />
+        </div>
+        <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+          {["a", "b", "c", "d"].map((stat) => (
+            <div key={stat} className="h-[68px] animate-pulse rounded-xl bg-muted" />
+          ))}
+        </div>
+      </div>
+
+      <Card className="min-h-0 gap-0 rounded-xl border-0 py-0 ring-0">
         <CardHeader className="shrink-0 gap-3 px-4 py-4 sm:px-5 md:px-6 md:py-5">
           <div className="h-6 w-40 animate-pulse rounded-full bg-muted" />
           <div className="h-11 w-full animate-pulse rounded-full bg-muted" />

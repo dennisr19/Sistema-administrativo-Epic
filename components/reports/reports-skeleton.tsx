@@ -1,35 +1,43 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-
-/** Misma silueta que el informe: KPIs, titular y rankings. */
+/**
+ * Misma silueta que `ReportsWorkspace`: sin una card que envuelva todo (la
+ * página real tampoco tiene una, cada bloque es su propia superficie), en el
+ * mismo orden — filtros, KPIs, titular, rankings, incidentes y el botón de
+ * cierre. Antes esta pantalla vivía metida en una sola Card con borde, que
+ * es justo lo que la implementación real evita a propósito.
+ */
 export function ReportsSkeleton() {
+  const pulse = "animate-pulse rounded-xl bg-muted"
+
   return (
-    <div className="grid h-full min-h-0 grid-rows-[minmax(0,1fr)] gap-0 md:grid-rows-[auto_minmax(0,1fr)] md:gap-5">
+    <div className="grid h-full min-h-0 grid-rows-[minmax(0,1fr)] gap-0 md:grid-rows-[auto_minmax(0,1fr)] md:gap-4">
       <div className="hidden h-[76px] md:block" />
-      <Card className="min-h-0 gap-0 rounded-xl border-0 py-0">
-        <CardHeader className="shrink-0 gap-3 px-4 py-4 sm:px-5 md:px-6">
-          <div className="h-11 w-80 animate-pulse rounded-full bg-muted" />
-        </CardHeader>
-        <CardContent className="min-h-0 flex-1 px-0">
-          <div className="grid grid-cols-2 xl:grid-cols-4">
+
+      <div className="min-h-0 overflow-y-auto pb-1">
+        <div className="grid gap-3">
+          <div className="hidden items-center justify-between gap-3 md:flex">
+            <div className="h-10 w-64 animate-pulse rounded-full bg-muted" />
+            <div className="h-11 w-72 animate-pulse rounded-lg bg-muted" />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
             {["reservas", "pax", "ingresos", "ticket"].map((kpi) => (
-              <div key={kpi} className="grid gap-2 px-4 py-4 sm:px-6">
-                <div className="h-9 w-24 animate-pulse rounded-lg bg-muted" />
-                <div className="h-4 w-16 animate-pulse rounded-full bg-muted" />
-              </div>
+              <div key={kpi} className={`${pulse} h-[68px]`} />
             ))}
           </div>
-          <div className="h-[89px] border-y bg-surface-muted" />
-          <div className="grid gap-6 px-4 py-5 sm:px-6 xl:grid-cols-3">
+
+          <div className={`${pulse} h-[72px]`} />
+
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             {["tours", "agentes", "hoteles"].map((rank) => (
-              <div key={rank} className="grid gap-4">
-                <div className="h-5 w-24 animate-pulse rounded-full bg-muted" />
-                <div className="h-4 w-full animate-pulse rounded-full bg-muted" />
-                <div className="h-4 w-full animate-pulse rounded-full bg-muted" />
-              </div>
+              <div key={rank} className={`${pulse} h-[188px]`} />
             ))}
           </div>
-        </CardContent>
-      </Card>
+
+          <div className={`${pulse} h-[104px]`} />
+
+          <div className="h-12 w-full animate-pulse rounded-lg bg-muted sm:w-64" />
+        </div>
+      </div>
     </div>
   )
 }

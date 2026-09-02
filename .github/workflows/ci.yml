@@ -1,0 +1,40 @@
+name: CI
+
+# Cloudflare Workers Builds despliega directo desde `main` sin ambiente de
+# staging de por medio; este workflow es el único gate antes de que algo
+# llegue ahí. Reusa los mismos scripts que corren en local (`check:fast`,
+# `build`) para no mantener dos versiones de la misma lógica.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Guardrails + lint + typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # check:css, check:size, check:layout, biome check y tsc --noEmit.
+      - run: npm run check:fast
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
