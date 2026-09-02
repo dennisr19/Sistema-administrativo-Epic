@@ -1,7 +1,7 @@
 import { Suspense } from "react"
 
-import { ReservationsSkeleton } from "@/components/reservations/reservations-skeleton"
 import { TodayOperations } from "@/components/today/today-operations"
+import { TodaySkeleton } from "@/components/today/today-skeleton"
 import { listOperationPeriod } from "@/db/queries/reservations"
 import { requireSession } from "@/lib/auth/server"
 import { formatLongDate } from "@/lib/format-date"
@@ -29,7 +29,7 @@ export default async function Page({
   // tiraba la pantalla y aparecía el esqueleto. Sin él, la transición mantiene
   // lo anterior hasta que llega lo nuevo.
   return (
-    <Suspense fallback={<ReservationsSkeleton />}>
+    <Suspense fallback={<TodaySkeleton />}>
       <TodayOperations
         reservationsPromise={reservationsPromise}
         range={range}
