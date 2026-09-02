@@ -21,6 +21,31 @@ export function addDays(date: string, days: number) {
 
 export type DayRange = { from: string; to: string }
 
+/**
+ * Hoy es una pantalla de operación: se mira un día, mañana, o a lo sumo la
+ * semana. Los atajos respetan eso, pero el rango libre de la URL lo escribe
+ * cualquiera, y sin tope alguien puede pedir un año y traerse la tabla
+ * entera a memoria. Este es el techo de lo que la pantalla carga de una.
+ */
+export const MAX_OPERATION_DAYS = 31
+
+export function daysBetween(from: string, to: string) {
+  const start = Date.parse(`${from}T00:00:00Z`)
+  const end = Date.parse(`${to}T00:00:00Z`)
+  if (Number.isNaN(start) || Number.isNaN(end)) return 0
+  return Math.floor((end - start) / 86_400_000) + 1
+}
+
+/** Recorta el rango al techo, contando desde el inicio que se pidió. */
+export function clampRange(range: DayRange): { range: DayRange; clamped: boolean } {
+  const span = daysBetween(range.from, range.to)
+  if (span <= MAX_OPERATION_DAYS) return { range, clamped: false }
+  return {
+    range: { from: range.from, to: addDays(range.from, MAX_OPERATION_DAYS - 1) },
+    clamped: true,
+  }
+}
+
 /** Los atajos de la pantalla de Hoy, expresados como rango de días. */
 export function presetRange(preset: "today" | "tomorrow" | "week", today = operationToday()) {
   if (preset === "tomorrow") return { from: addDays(today, 1), to: addDays(today, 1) }

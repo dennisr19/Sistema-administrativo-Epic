@@ -19,11 +19,13 @@ import { TodayToolbar } from "@/components/today/today-toolbar"
 import { Card, CardDescription, CardHeader } from "@/components/ui/card"
 import { defaultOperationFilters, type OperationFilters } from "@/lib/operation-filters"
 import type { OperationalIssue, Reservation, TimeRange } from "@/lib/reservation"
-import { type DayRange, matchPreset, presetRange } from "@/lib/today"
+import { type DayRange, MAX_OPERATION_DAYS, matchPreset, presetRange } from "@/lib/today"
 
 type TodayOperationsProps = {
   reservationsPromise: Promise<Reservation[]>
   range: DayRange
+  /** El rango pedido pasaba del techo y se recortó: hay que decirlo. */
+  clamped?: boolean
   greeting: string
   dateLabel: string
 }
@@ -36,6 +38,7 @@ type TodayOperationsProps = {
 export function TodayOperations({
   reservationsPromise,
   range: dayRange,
+  clamped = false,
   greeting,
   dateLabel,
 }: TodayOperationsProps) {
@@ -129,6 +132,13 @@ export function TodayOperations({
             onChange={changeFilters}
             onOpen={() => setFiltersOpen(true)}
           />
+
+          {clamped ? (
+            <p className="rounded-lg bg-surface-muted px-3 py-2 text-[13px] text-muted-foreground">
+              Hoy es la pantalla de la operación, no el historial: se muestran los primeros{" "}
+              {MAX_OPERATION_DAYS} días del rango. Para periodos largos, usa Reservas.
+            </p>
+          ) : null}
 
           <Suspense fallback={<AlertsFallback />}>
             <TodayAlerts {...block} onSelect={selectIssue} />

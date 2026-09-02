@@ -163,8 +163,17 @@ export const reservationCoverage = cache(async (organizationId: string) => {
 })
 
 /**
- * Las salidas de un periodo de la operación. Son pocas decenas de filas, así
- * que viajan enteras: los contadores de incidencia tienen que ser instantáneos.
+ * Techo duro de filas para un periodo de operación. El rango ya viene
+ * recortado por `clampRange`, así que esto es el segundo cinturón: aunque
+ * alguien llame a esta consulta con otro rango, nunca se trae la tabla.
+ */
+export const OPERATION_PERIOD_LIMIT = 500
+
+/**
+ * Las salidas de un periodo de la operación. Viajan enteras a propósito: los
+ * contadores de pendientes y el conteo en vivo de la hoja de filtros se
+ * calculan sobre el conjunto completo del periodo. Por eso el periodo está
+ * acotado —hasta `MAX_OPERATION_DAYS` días— y esta consulta lleva `limit`.
  */
 export const listOperationPeriod = cache(
   async (organizationId: string, from: string, to: string) => {
@@ -187,6 +196,7 @@ export const listOperationPeriod = cache(
         ),
       )
       .orderBy(asc(reservations.date), asc(reservations.time))
+      .limit(OPERATION_PERIOD_LIMIT)
 
     const tomorrow = addDays(today, 1)
     return rows.map((row) => toReservation(row, today, tomorrow))
