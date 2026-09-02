@@ -48,7 +48,13 @@ export function DesktopSidebar({ name, email, organization }: DesktopSidebarProp
                   key={item.label}
                   variant="ghost"
                   nativeButton={false}
-                  render={<Link href={item.href} />}
+                  // `prefetch` completo y no el de por defecto: estas rutas
+                  // son dinámicas, así que sin esto solo se adelanta el
+                  // loading.tsx. Con el payload entero ya traído, volver a una
+                  // pantalla del menú es instantáneo y ni siquiera parpadea el
+                  // esqueleto. Son cuatro rutas y el shell va cacheado, así
+                  // que el costo es bajo.
+                  render={<Link href={item.href} prefetch />}
                   className={cn(
                     "h-11 justify-center gap-2.5 px-0 text-[15px] xl:justify-start xl:px-2.5",
                     active

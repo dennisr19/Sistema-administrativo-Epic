@@ -22,7 +22,7 @@ export function MobileBottomNav() {
             key={item.label}
             variant="ghost"
             nativeButton={false}
-            render={<Link href={item.href} />}
+            render={<Link href={item.href} prefetch />}
             className={
               active
                 ? "h-full flex-col gap-1.5 rounded-none text-[13px] font-semibold text-primary hover:bg-transparent hover:text-primary"
