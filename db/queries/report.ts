@@ -8,6 +8,7 @@ import { cachedPerOrganization } from "@/db/cached"
 import { reservationColumns, toReservation } from "@/db/queries/reservation-row"
 import { agents, drivers, guides, hotels, reservations, tours } from "@/db/schema"
 import { tags } from "@/lib/cache-tags"
+import { medir } from "@/lib/observe"
 import { computeReport, previousPeriod } from "@/lib/report-metrics"
 import { addDays, operationToday } from "@/lib/today"
 
@@ -25,7 +26,12 @@ export const getReport = cache((organizationId: string, from: string, to: string
   return cachedPerOrganization(
     "report",
     organizationId,
-    () => loadReport(organizationId, from, to),
+    () =>
+      medir("db:getReport", () => loadReport(organizationId, from, to), {
+        organizacion: organizationId,
+        // El conteo dice si sigue siendo razonable agregar en memoria.
+        filas: (r) => r.reservations + r.cancelled.count,
+      }),
     {
       tags: [tags.reservations(organizationId)],
       // El rango va en la llave: cada periodo es una entrada distinta.

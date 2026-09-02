@@ -2,6 +2,8 @@ import "server-only"
 
 import { unstable_cache } from "next/cache"
 
+import { medir, reportar } from "@/lib/observe"
+
 /**
  * `unstable_cache` con la organización dentro de la llave y de las etiquetas.
  *
@@ -29,5 +31,31 @@ export function cachedPerOrganization<T>(
   },
 ): Promise<T> {
   const { key = [], ...cacheOptions } = options
-  return unstable_cache(load, [name, organizationId, ...key], cacheOptions)()
+
+  // El loader corre solo cuando la entrada no estaba: si al terminar esta
+  // bandera sigue en falso, la respuesta salió del cache. Es la única forma
+  // de distinguir hit de miss, porque `unstable_cache` no lo informa.
+  let ejecutado = false
+  const inicio = performance.now()
+
+  const envuelto = unstable_cache(
+    async () => {
+      ejecutado = true
+      return load()
+    },
+    [name, organizationId, ...key],
+    cacheOptions,
+  )
+
+  return envuelto().then((resultado) => {
+    reportar({
+      op: `cache:${name}`,
+      ms: performance.now() - inicio,
+      cache: ejecutado ? "miss" : "hit",
+      organizacion: organizationId,
+    })
+    return resultado
+  })
 }
+
+export { medir }

@@ -56,6 +56,31 @@ Corre guardrails (nada de CSS a mano, componentes chicos, contenedores consisten
 corre en cada push a `main` y cada PR. `main` despliega directo a Cloudflare sin ambiente de
 staging de por medio, así que ese workflow es el único gate antes de producción.
 
+## Medición
+
+Cada consulta a D1 y cada lectura del Data Cache emite una línea JSON con
+`evento: "medicion"`. Como `observability` está activo en `wrangler.jsonc`,
+quedan consultables en Workers Logs sin configurar nada más.
+
+Los campos: `op` (qué se midió), `ms`, `filas` (el proxy del tamaño de la
+respuesta) y `cache` (`hit` o `miss`).
+
+En local, contra el worker real:
+
+```bash
+npm run cf:build && npx wrangler dev
+```
+
+Y en otra terminal, después de navegar:
+
+```bash
+grep -o '{"evento":"medicion".*}' <(npx wrangler tail --format json)
+```
+
+Sirve para responder tres preguntas concretas: si una consulta se está
+trayendo más filas de las que pinta, si el cache está pegando o fallando
+siempre, y qué operación domina el tiempo de una pantalla.
+
 ## Estado actual
 
 Construido y en uso: las cinco pantallas, autenticación por código, exportar a Excel/CSV, todo el
