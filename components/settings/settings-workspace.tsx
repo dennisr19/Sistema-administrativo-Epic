@@ -8,13 +8,22 @@ import { PageHeader } from "@/components/page-header"
 import { EntityFormSheet } from "@/components/settings/entity-form-sheet"
 import { EntityNav } from "@/components/settings/entity-nav"
 import { SettingsCatalogPanel } from "@/components/settings/settings-catalog-panel"
-import { useSettingsStore } from "@/components/settings/settings-store"
+import { SettingsStoreProvider, useSettingsStore } from "@/components/settings/settings-store"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { definitionOf, type EntityKind, type SettingsData } from "@/lib/entities"
 import { cn } from "@/lib/utils"
 
+/** Le da a `SettingsWorkspaceContent` su propio store: uno por montaje, no uno por módulo. */
 export function SettingsWorkspace({ dataPromise }: { dataPromise: Promise<SettingsData> }) {
+  return (
+    <SettingsStoreProvider>
+      <SettingsWorkspaceContent dataPromise={dataPromise} />
+    </SettingsStoreProvider>
+  )
+}
+
+function SettingsWorkspaceContent({ dataPromise }: { dataPromise: Promise<SettingsData> }) {
   const { kind, records, usage, counts } = use(dataPromise)
   const router = useRouter()
   const [optimisticKind, setOptimisticKind] = useOptimistic(kind)

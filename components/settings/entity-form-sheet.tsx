@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState, useEffect, useState } from "react"
+import { useState, useTransition } from "react"
 
 import { saveEntityAction } from "@/app/(app)/configuracion/actions"
 import { Field } from "@/components/reservations/form/field"
@@ -40,16 +40,25 @@ export function EntityFormSheet({
   const [draft, setDraft] = useState<EntityRecord>(
     record ?? { id: "", name: initialName, active: true },
   )
-  const [state, formAction, pending] = useActionState(saveEntityAction, initialEntityActionState)
+  const [state, setState] = useState(initialEntityActionState)
+  const [pending, startTransition] = useTransition()
 
   const update = (patch: Partial<EntityRecord>) => setDraft((current) => ({ ...current, ...patch }))
 
-  // Un solo camino de guardado, aquí y al crear desde una reserva.
-  useEffect(() => {
-    if (state.status !== "success") return
-    onSaved?.(draft.name.trim())
-    onClose()
-  }, [state.status, onClose, onSaved, draft.name])
+  // Sin useEffect: se reacciona al resultado ahí donde llega, no observando
+  // un estado que cambió. Un solo camino de guardado, aquí y al crear desde
+  // una reserva.
+  const formAction = (formData: FormData) => {
+    startTransition(async () => {
+      const result = await saveEntityAction(state, formData)
+      if (result.status === "success") {
+        onSaved?.(draft.name.trim())
+        onClose()
+        return
+      }
+      setState(result)
+    })
+  }
 
   return (
     <Sheet open onOpenChange={(open) => !open && onClose()}>

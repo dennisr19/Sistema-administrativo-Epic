@@ -1,17 +1,17 @@
+import { IconCompass } from "@tabler/icons-react"
+
 import { cn } from "@/lib/utils"
 
 /** La marca sola. En la entrada carga el nombre el titular, no el logotipo. */
 export function AppMark({ large = false }: { large?: boolean }) {
   return (
     <span
-      role="img"
-      aria-label="Epic Adventures"
       className={cn(
-        "flex items-center justify-center rounded-full bg-primary leading-none",
-        large ? "size-14 text-[26px]" : "size-9 text-base",
+        "flex items-center justify-center rounded-full bg-primary text-primary-foreground",
+        large ? "size-14" : "size-9",
       )}
     >
-      🧭
+      <IconCompass className={large ? "size-7" : "size-5"} stroke={2.2} />
     </span>
   )
 }

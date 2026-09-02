@@ -31,8 +31,14 @@ export function ReservationSearchBar({
   const latest = useRef(onQueryChange)
   latest.current = onQueryChange
 
-  // Si el filtro cambia desde fuera, por ejemplo al limpiarlo, el campo sigue.
-  useEffect(() => setText(query), [query])
+  // Si el filtro cambia desde fuera, por ejemplo al limpiarlo, el campo debe
+  // seguirlo. Se ajusta durante el render (no en un Effect aparte) para que
+  // no haya un frame de por medio con el texto viejo.
+  const [prevQuery, setPrevQuery] = useState(query)
+  if (query !== prevQuery) {
+    setPrevQuery(query)
+    setText(query)
+  }
 
   useEffect(() => {
     if (text === query) return
