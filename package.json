@@ -9,7 +9,7 @@
     "start": "next start",
     "format": "biome format --write .",
     "lint": "biome lint .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "check:css": "node scripts/check-no-handrolled-css.mjs --src . --budget 200",
     "check:size": "node scripts/check-component-size.mjs --src . --warn 200 --fail 300",
     "check:layout": "node scripts/check-consistent-container.mjs --src .",
