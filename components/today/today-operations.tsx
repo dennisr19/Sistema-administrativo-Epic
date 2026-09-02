@@ -2,7 +2,7 @@
 
 import { IconFilterOff } from "@tabler/icons-react"
 import { usePathname, useRouter } from "next/navigation"
-import { use, useState, useTransition } from "react"
+import { use, useOptimistic, useState, useTransition } from "react"
 import { ExportMenu } from "@/components/export-menu"
 import { ListPagination } from "@/components/list-pagination"
 import { PageHeader } from "@/components/page-header"
@@ -45,8 +45,12 @@ export function TodayOperations({
   const pathname = usePathname()
   const reservations = use(reservationsPromise)
   const [pending, startTransition] = useTransition()
+  // El tab y el control de fecha responden al clic, no a que D1 conteste: se
+  // adelantan al valor que se está pidiendo mientras la navegación real
+  // corre detrás. Mismo patrón que ya prueba bien en Configuración.
+  const [optimisticDayRange, setOptimisticDayRange] = useOptimistic(dayRange)
   // El atajo activo se deduce del rango, no se guarda aparte.
-  const range = matchPreset(dayRange) ?? "today"
+  const range = matchPreset(optimisticDayRange) ?? "today"
   const [activeIssue, setActiveIssue] = useState<OperationalIssue | null>(null)
   const [selected, setSelected] = useState<Reservation | null>(null)
   const [filters, setFilters] = useState<OperationFilters>(defaultOperationFilters)
@@ -73,6 +77,7 @@ export function TodayOperations({
     setActiveIssue(null)
     setPage(1)
     startTransition(() => {
+      setOptimisticDayRange(next)
       router.replace(`${pathname}?desde=${next.from}&hasta=${next.to}`, { scroll: false })
     })
   }
@@ -108,7 +113,11 @@ export function TodayOperations({
           <OperationPeriodTabs value={range} onValueChange={selectRange} />
           <div className="flex items-center gap-2">
             {/* Los presets cubren el día a día; el rango sirve para lo demás. */}
-            <DateRangeControl from={dayRange.from} to={dayRange.to} onChange={selectDays} />
+            <DateRangeControl
+              from={optimisticDayRange.from}
+              to={optimisticDayRange.to}
+              onChange={selectDays}
+            />
             <ExportMenu kind="hoy" />
           </div>
         </div>

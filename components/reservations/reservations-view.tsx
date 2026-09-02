@@ -67,12 +67,21 @@ export function ReservationsView({
   const results = use(resultsPromise)
   const coverage = use(coveragePromise)
   const totals = use(totalsPromise)
-  const { pending, setFilters, replaceFilters, setPage } = useReservationNavigation(filters, page)
+  // `filters` (optimista) es lo que pintan los controles: responde al clic,
+  // no a que D1 conteste. La prop original sigue siendo la base para calcular
+  // el próximo valor real en `useReservationNavigation`.
+  const {
+    pending,
+    filters: optimisticFilters,
+    setFilters,
+    replaceFilters,
+    setPage,
+  } = useReservationNavigation(filters, page)
 
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [selected, setSelected] = useState<Reservation | null>(null)
 
-  const activeCount = countActiveReservationFilters(filters)
+  const activeCount = countActiveReservationFilters(optimisticFilters)
   const from = results.total ? (results.page - 1) * pageSize + 1 : 0
   const to = Math.min(results.page * pageSize, results.total)
 
@@ -87,7 +96,7 @@ export function ReservationsView({
       <div className="hidden gap-4 md:grid">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <SegmentedTabs
-            value={filters.status}
+            value={optimisticFilters.status}
             options={statusOptions}
             onValueChange={(status: StatusFilter) => setFilters({ status })}
             ariaLabel="Estado de la reserva"
@@ -96,8 +105,8 @@ export function ReservationsView({
           justify-between ya no tiene con quién repartir espacio. */}
           <div className="ml-auto flex items-center gap-2">
             <DateRangeControl
-              from={filters.from}
-              to={filters.to}
+              from={optimisticFilters.from}
+              to={optimisticFilters.to}
               onChange={(range) => setFilters(range)}
             />
             <ExportMenu kind="reservas" />
@@ -127,14 +136,14 @@ export function ReservationsView({
           </div>
 
           <ReservationSearchBar
-            query={filters.query}
+            query={optimisticFilters.query}
             activeCount={activeCount}
             onQueryChange={(query) => setFilters({ query })}
             onOpenFilters={() => setFiltersOpen(true)}
             actions={<ExportMenu kind="reservas" />}
           />
 
-          <ActiveFilterChips filters={filters} onClear={setFilters} />
+          <ActiveFilterChips filters={optimisticFilters} onClear={setFilters} />
         </CardHeader>
 
         <CardContent

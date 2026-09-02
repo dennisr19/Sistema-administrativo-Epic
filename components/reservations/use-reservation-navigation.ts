@@ -1,32 +1,37 @@
 "use client"
 
 import { usePathname, useRouter } from "next/navigation"
-import { useCallback, useTransition } from "react"
+import { useCallback, useOptimistic, useTransition } from "react"
 
 import type { ReservationFilters } from "@/lib/reservation-filters"
 import { reservationParamsToQuery } from "@/lib/reservation-search-params"
 
 /**
  * Los filtros viven en la URL. Cambiarlos es navegar, dentro de una transición
- * para que la tabla anterior siga visible mientras llega la nueva.
+ * para que la tabla anterior siga visible mientras llega la nueva. Los tabs
+ * y controles se pintan del valor optimista, así que responden al clic, no
+ * a que el servidor conteste.
  */
 export function useReservationNavigation(filters: ReservationFilters, _page: number) {
   const router = useRouter()
   const pathname = usePathname()
   const [pending, startTransition] = useTransition()
+  const [optimisticFilters, setOptimisticFilters] = useOptimistic(filters)
 
   const go = useCallback(
     (nextFilters: ReservationFilters, nextPage: number) => {
       const query = reservationParamsToQuery(nextFilters, nextPage)
       startTransition(() => {
+        setOptimisticFilters(nextFilters)
         router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false })
       })
     },
-    [router, pathname],
+    [router, pathname, setOptimisticFilters],
   )
 
   return {
     pending,
+    filters: optimisticFilters,
     /** Cambiar cualquier filtro devuelve a la primera página. */
     setFilters: useCallback(
       (patch: Partial<ReservationFilters>) => go({ ...filters, ...patch }, 1),
