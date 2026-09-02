@@ -1,9 +1,11 @@
 # Sistema Administrativo Epic
 
-Herramienta ligera para operar tours. Cuatro pantallas, `Hoy`, `Reservas`, `Reportes` y
-`Configuración`, sobre Next.js, React, shadcn con Base UI, Tailwind CSS y Tabler Icons.
+Herramienta ligera para operar tours. Cinco pantallas, `Hoy`, `Reservas`, `Reportes`,
+`Configuración` y `Perfil`, sobre Next.js (App Router, Server Actions), React 19, Drizzle + D1,
+shadcn con Base UI, Tailwind CSS y Tabler Icons. Corre en Cloudflare Workers vía OpenNext.
 
 La definición funcional, las decisiones visuales y el alcance están en [`PRODUCT.md`](./PRODUCT.md).
+Lo que falta por construir está listado abajo, en [Estado actual](#estado-actual).
 
 ## Desarrollo local
 
@@ -14,9 +16,13 @@ npm run dev
 ```
 
 `db:reset` crea la base D1 local, aplica las migraciones y carga los datos reales importados de la
-app actual. `next dev` accede a esa base a través del binding `DB`.
+app anterior. `next dev` accede a esa base a través del binding `DB` — no hay mocks, todas las
+pantallas leen y escriben contra D1 desde `db/queries` y `db/mutations`.
 
-Las pantallas todavía leen de los mocks en `lib/`. La capa de datos vive en `db/`.
+Para entrar: el login es sin contraseña, por código a un correo (`lib/auth/email.ts`). Sin
+`RESEND_API_KEY` en `.dev.vars`, el código no se envía — se imprime en la consola del servidor
+(`next dev`), así que el login funciona en local sin depender de Resend. Necesitas un usuario ya
+creado (ver `npm run db:user` más abajo); no hay alta pública.
 
 ## Datos
 
@@ -45,10 +51,31 @@ El script escribe `data/seed/`, una JSON por tabla más un `seed.sql` para D1, y
 npm run check:full
 ```
 
+Corre guardrails (nada de CSS a mano, componentes chicos, contenedores consistentes), Biome,
+`tsc` y el build de Next, en ese orden — el mismo camino que [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+corre en cada push a `main` y cada PR. `main` despliega directo a Cloudflare sin ambiente de
+staging de por medio, así que ese workflow es el único gate antes de producción.
+
+## Estado actual
+
+Construido y en uso: las cinco pantallas, autenticación por código, exportar a Excel/CSV, todo el
+CRUD de reservas y catálogos, reportes con comparación de periodo.
+
+Documentado como pendiente en [`PRODUCT.md`](./PRODUCT.md#exportación-pendiente) y sin construir
+todavía:
+
+- Exportar a Word, XML e imprimir en PDF (hoy solo Excel y CSV).
+- Alta de usuarios: no hay pantalla para invitar o crear un usuario nuevo en una organización
+  existente — la única forma es `npm run db:user` desde la terminal. Antes de sumar a alguien más
+  al equipo, esto es lo primero que hace falta.
+- Zona horaria, moneda e idioma por organización (hoy fijos a Costa Rica / USD / español).
+- Auditoría de cambios, políticas finales de sesión y necesidades offline: sin definir.
+
 ## Primera vez en una cuenta de Cloudflare nueva
 
-`wrangler.jsonc` trae `PENDIENTE_ACCOUNT_ID` y `PENDIENTE_DATABASE_ID` de marcador. Con
-`npx wrangler login` ya autenticado contra la cuenta que va a alojar esto:
+`wrangler.jsonc` ya trae el `account_id` y el `database_id` de la cuenta donde vive esto hoy. Para
+moverlo a una cuenta de Cloudflare distinta, con `npx wrangler login` ya autenticado contra la
+cuenta destino:
 
 ```bash
 npx wrangler whoami                    # copiar el Account ID que muestra
