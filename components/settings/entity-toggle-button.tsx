@@ -16,6 +16,8 @@ type EntityToggleButtonProps = {
   name: string
   active: boolean
   compact?: boolean
+  /** Pinta el cambio antes de que el servidor conteste. */
+  onToggle: (id: string) => void
 }
 
 export function EntityToggleButton({
@@ -24,6 +26,7 @@ export function EntityToggleButton({
   name,
   active,
   compact = false,
+  onToggle,
 }: EntityToggleButtonProps) {
   const [pending, startTransition] = useTransition()
   const [state, setState] = useState(initialEntityActionState)
@@ -35,6 +38,10 @@ export function EntityToggleButton({
   // por aria-live, invisible para quien no usa lector de pantalla.
   const action = (formData: FormData) => {
     startTransition(async () => {
+      // Primero se pinta el cambio, después se pide. Si la acción falla, el
+      // estado optimista se descarta solo al terminar la transición y la fila
+      // vuelve a lo que dice el servidor; el toast explica por qué.
+      onToggle(id)
       const result = await toggleEntityAction(state, formData)
       if (result.status === "error") {
         toast.add({ type: "error", title: result.message ?? "No pudimos cambiar el estado." })
@@ -52,7 +59,7 @@ export function EntityToggleButton({
       disabled={pending}
       aria-label={label}
     >
-      {compact ? <IconPower /> : pending ? "Guardando…" : active ? "Desactivar" : "Activar"}
+      {compact ? <IconPower /> : active ? "Desactivar" : "Activar"}
     </Button>
   )
 

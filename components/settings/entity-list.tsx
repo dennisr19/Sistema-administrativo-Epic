@@ -17,11 +17,20 @@ type EntityListProps = {
   kind: EntityKind
   records: EntityRecord[]
   usage: (record: EntityRecord) => number
+  /** Marca el cambio de estado como optimista antes de que el servidor conteste. */
+  onToggle: (id: string) => void
   onEdit: (record: EntityRecord) => void
 }
 
 /** La versión mobile de la tabla: mismos datos, apilados. */
-export function EntityList({ definition, kind, records, usage, onEdit }: EntityListProps) {
+export function EntityList({
+  definition,
+  kind,
+  records,
+  usage,
+  onEdit,
+  onToggle,
+}: EntityListProps) {
   return (
     <ul className="min-[1400px]:hidden">
       {records.map((record) => {
@@ -67,6 +76,7 @@ export function EntityList({ definition, kind, records, usage, onEdit }: EntityL
             <div className="mt-2.5 flex items-center justify-between gap-3">
               <EntityStateBadge active={record.active} />
               <EntityToggleButton
+                onToggle={onToggle}
                 kind={kind}
                 id={record.id}
                 name={record.name}

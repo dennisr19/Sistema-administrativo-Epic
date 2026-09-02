@@ -25,10 +25,19 @@ type EntityTableProps = {
   kind: EntityKind
   records: EntityRecord[]
   usage: (record: EntityRecord) => number
+  /** Marca el cambio de estado como optimista antes de que el servidor conteste. */
+  onToggle: (id: string) => void
   onEdit: (record: EntityRecord) => void
 }
 
-export function EntityTable({ definition, kind, records, usage, onEdit }: EntityTableProps) {
+export function EntityTable({
+  definition,
+  kind,
+  records,
+  usage,
+  onEdit,
+  onToggle,
+}: EntityTableProps) {
   return (
     <TooltipProvider>
       <div className="hidden min-[1400px]:block">
@@ -90,6 +99,7 @@ export function EntityTable({ definition, kind, records, usage, onEdit }: Entity
                 <TableCell className="pr-5">
                   <div className="flex items-center justify-end gap-1">
                     <EntityToggleButton
+                      onToggle={onToggle}
                       compact
                       kind={kind}
                       id={record.id}

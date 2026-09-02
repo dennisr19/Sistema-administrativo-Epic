@@ -1,6 +1,7 @@
 "use client"
 
 import { IconArrowLeft, IconPlus } from "@tabler/icons-react"
+import { useOptimistic } from "react"
 
 import { ExportMenu } from "@/components/export-menu"
 import { ListPagination } from "@/components/list-pagination"
@@ -48,10 +49,18 @@ export function SettingsCatalogPanel({
   const startEditing = useSettingsStore((state) => state.startEditing)
   const closeMobile = useSettingsStore((state) => state.closeMobile)
 
+  // El activo/inactivo se pinta al instante y el servidor confirma después:
+  // el badge y el botón viven en celdas distintas, así que el estado optimista
+  // vive aquí, que es quien tiene los registros, para que los dos cambien
+  // juntos y no uno antes que el otro.
+  const [optimisticRecords, aplicarToggle] = useOptimistic(records, (actuales, id: string) =>
+    actuales.map((record) => (record.id === id ? { ...record, active: !record.active } : record)),
+  )
+
   const term = normalize(query)
   const matches = term
-    ? records.filter((record) => normalize(searchableText(record)).includes(term))
-    : records
+    ? optimisticRecords.filter((record) => normalize(searchableText(record)).includes(term))
+    : optimisticRecords
   const pageCount = Math.max(1, Math.ceil(matches.length / pageSize))
   const currentPage = Math.min(page, pageCount)
   const visible = matches.slice((currentPage - 1) * pageSize, currentPage * pageSize)
@@ -107,6 +116,7 @@ export function SettingsCatalogPanel({
         ) : visible.length ? (
           <>
             <EntityTable
+              onToggle={aplicarToggle}
               definition={definition}
               kind={kind}
               records={visible}
@@ -114,6 +124,7 @@ export function SettingsCatalogPanel({
               onEdit={(record) => startEditing(record.id)}
             />
             <EntityList
+              onToggle={aplicarToggle}
               definition={definition}
               kind={kind}
               records={visible}
