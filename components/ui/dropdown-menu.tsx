@@ -1,5 +1,11 @@
 "use client"
 
+// checks: allow-file
+// Primitivo generado por el CLI de shadcn, no código de la app: son quince
+// subcomponentes de 5-15 líneas (la convención de componente compuesto de
+// shadcn), no un componente enorme. Partirlo lo desviaría de upstream y
+// rompería `shadcn add` la próxima vez que se actualice.
+
 import { Menu as MenuPrimitive } from "@base-ui/react/menu"
 import { IconCheck, IconChevronRight } from "@tabler/icons-react"
 import type * as React from "react"

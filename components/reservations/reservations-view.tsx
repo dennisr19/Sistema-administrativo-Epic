@@ -1,24 +1,21 @@
 "use client"
 
-import { IconPlus, IconSearchOff } from "@tabler/icons-react"
+import { IconPlus } from "@tabler/icons-react"
 import { useRouter } from "next/navigation"
 import { use, useState } from "react"
 import { ExportMenu } from "@/components/export-menu"
 import { ListPagination } from "@/components/list-pagination"
 import { PageHeader } from "@/components/page-header"
 import { ActiveFilterChips } from "@/components/reservations/active-filter-chips"
-import { DateRangeControl } from "@/components/reservations/date-range-control"
 import { ReservationFilterSheet } from "@/components/reservations/reservation-filter-sheet"
 import { ReservationSearchBar } from "@/components/reservations/reservation-search-bar"
-import {
-  ReservationStats,
-  type ReservationTotals,
-} from "@/components/reservations/reservation-stats"
+import type { ReservationTotals } from "@/components/reservations/reservation-stats"
+import { ReservationsEmpty } from "@/components/reservations/reservations-empty"
 import { ReservationsList } from "@/components/reservations/reservations-list"
 import { ReservationsTable } from "@/components/reservations/reservations-table"
+import { ReservationsToolbar } from "@/components/reservations/reservations-toolbar"
 import { useReservationNavigation } from "@/components/reservations/use-reservation-navigation"
 import { useSavedToast } from "@/components/reservations/use-saved-toast"
-import { SegmentedTabs } from "@/components/segmented-tabs"
 import { ReservationDetailSheet } from "@/components/today/reservation-detail-sheet"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card"
@@ -28,8 +25,6 @@ import {
   countActiveReservationFilters,
   defaultReservationFilters,
   type ReservationFilters,
-  type StatusFilter,
-  statusOptions,
 } from "@/lib/reservation-filters"
 import { cn } from "@/lib/utils"
 
@@ -95,27 +90,7 @@ export function ReservationsView({
         onNewReservation={() => router.push("/reservas/nueva")}
       />
 
-      <div className="hidden gap-4 md:grid">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <SegmentedTabs
-            value={optimisticFilters.status}
-            options={statusOptions}
-            onValueChange={(status: StatusFilter) => setFilters({ status })}
-            ariaLabel="Estado de la reserva"
-          />
-          {/* ml-auto: en tablet este grupo se envuelve a su propia fila, donde
-          justify-between ya no tiene con quién repartir espacio. */}
-          <div className="ml-auto flex items-center gap-2">
-            <DateRangeControl
-              from={optimisticFilters.from}
-              to={optimisticFilters.to}
-              onChange={(range) => setFilters(range)}
-            />
-            <ExportMenu kind="reservas" />
-          </div>
-        </div>
-        <ReservationStats totals={totals} />
-      </div>
+      <ReservationsToolbar filters={optimisticFilters} totals={totals} onChange={setFilters} />
 
       <Card id="lista" className="min-h-0 gap-0 rounded-xl border-0 py-0 ring-0">
         <CardHeader className="shrink-0 gap-3 px-4 py-4 sm:px-5 md:px-6 md:py-5">
@@ -162,22 +137,7 @@ export function ReservationsView({
               <ReservationsList reservations={results.reservations} onSelect={setSelected} />
             </>
           ) : (
-            <div className="flex min-h-64 flex-col items-center justify-center px-6 text-center">
-              <span className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
-                <IconSearchOff className="size-5" />
-              </span>
-              <p className="font-semibold">Ninguna reserva coincide</p>
-              <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-                Prueba con otro término, amplía el rango de fechas o quita los filtros activos.
-              </p>
-              <Button
-                variant="secondary"
-                className="mt-4"
-                onClick={() => replaceFilters(defaultReservationFilters)}
-              >
-                Ver todo el historial
-              </Button>
-            </div>
+            <ReservationsEmpty onClear={() => replaceFilters(defaultReservationFilters)} />
           )}
         </CardContent>
 

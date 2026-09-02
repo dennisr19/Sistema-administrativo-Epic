@@ -1,21 +1,18 @@
 "use client"
 
-import { IconFilterOff } from "@tabler/icons-react"
 import { usePathname, useRouter } from "next/navigation"
 import { use, useOptimistic, useState, useTransition } from "react"
-import { ExportMenu } from "@/components/export-menu"
 import { ListPagination } from "@/components/list-pagination"
 import { PageHeader } from "@/components/page-header"
-import { DateRangeControl } from "@/components/reservations/date-range-control"
 import { AlertFilters } from "@/components/today/alert-filters"
 import { DesktopReservationTable } from "@/components/today/desktop-reservation-table"
 import { MobileReservationList } from "@/components/today/mobile-reservation-list"
+import { OperationEmpty } from "@/components/today/operation-empty"
 import { OperationFilterBar } from "@/components/today/operation-filter-bar"
 import { OperationFilterSheet } from "@/components/today/operation-filter-sheet"
 import { OperationPeriodTabs } from "@/components/today/operation-period-tabs"
-import { OperationStats } from "@/components/today/operation-stats"
 import { ReservationDetailSheet } from "@/components/today/reservation-detail-sheet"
-import { Button } from "@/components/ui/button"
+import { TodayToolbar } from "@/components/today/today-toolbar"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card"
 import {
   defaultOperationFilters,
@@ -108,21 +105,14 @@ export function TodayOperations({
         onNewReservation={() => router.push("/reservas/nueva")}
       />
 
-      <div className="hidden gap-4 md:grid">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <OperationPeriodTabs value={range} onValueChange={selectRange} />
-          <div className="flex items-center gap-2">
-            {/* Los presets cubren el día a día; el rango sirve para lo demás. */}
-            <DateRangeControl
-              from={optimisticDayRange.from}
-              to={optimisticDayRange.to}
-              onChange={selectDays}
-            />
-            <ExportMenu kind="hoy" />
-          </div>
-        </div>
-        <OperationStats reservations={reservationsInContext} counts={counts} />
-      </div>
+      <TodayToolbar
+        range={range}
+        dayRange={optimisticDayRange}
+        reservations={reservationsInContext}
+        counts={counts}
+        onSelectRange={selectRange}
+        onSelectDays={selectDays}
+      />
 
       <Card id="lista" className="min-h-0 gap-0 rounded-xl border-0 py-0 ring-0">
         <CardHeader className="shrink-0 gap-3 px-4 py-4 sm:px-5 md:px-6 md:py-5">
@@ -167,18 +157,7 @@ export function TodayOperations({
               <MobileReservationList reservations={visibleReservations} onSelect={setSelected} />
             </>
           ) : (
-            <div className="flex min-h-64 flex-col items-center justify-center px-6 text-center">
-              <span className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-500">
-                <IconFilterOff className="size-5" />
-              </span>
-              <p className="font-semibold">Nada pendiente en esta categoría</p>
-              <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-                Cambia los filtros o vuelve a ver toda la operación.
-              </p>
-              <Button variant="secondary" className="mt-4" onClick={clearFilters}>
-                Ver todas
-              </Button>
-            </div>
+            <OperationEmpty onClear={clearFilters} />
           )}
         </CardContent>
 

@@ -4,20 +4,9 @@ import { IconArrowLeft } from "@tabler/icons-react"
 import { useActionState, useState } from "react"
 
 import { saveReservationAction } from "@/app/(app)/reservas/actions"
-import { ExtrasTabs } from "@/components/reservations/form/extras-tabs"
-import {
-  AgentField,
-  ClientField,
-  HotelField,
-  PickupField,
-  ScheduleFields,
-  TeamFields,
-  TourField,
-} from "@/components/reservations/form/field-groups"
-import { FormSection } from "@/components/reservations/form/form-section"
+import { DesktopFields } from "@/components/reservations/form/desktop-fields"
+import { FormActions } from "@/components/reservations/form/form-actions"
 import { ReservationHiddenFields } from "@/components/reservations/form/hidden-fields"
-import { PaymentFields } from "@/components/reservations/form/payment-fields"
-import { StatusField } from "@/components/reservations/form/status-field"
 import { stepTitles, wizardSteps } from "@/components/reservations/form/wizard-steps"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -59,14 +48,6 @@ export function ReservationForm({
     setDraft((current) => ({ ...current, ...patch }))
   const submitLabel = mode === "create" ? "Crear reserva" : "Guardar cambios"
   const title = mode === "create" ? "Nueva reserva" : "Editar reserva"
-  const extrasSummary = [
-    draft.tickets.length ? `${draft.tickets.length} entradas` : "",
-    draft.meals.length ? "alimentación" : "",
-    draft.notes.trim() ? "nota" : "",
-  ]
-    .filter(Boolean)
-    .join(", ")
-
   const steps = wizardSteps({ draft, errors, onChange: change })
 
   /** Validación de conveniencia: la que manda es la del servidor. */
@@ -115,53 +96,9 @@ export function ReservationForm({
         {/* `contents`: el formulario envuelve sin alterar el layout de la card. */}
         <form action={formAction} className="contents">
           <ReservationHiddenFields draft={draft} id={reservationId} />
+
           {isDesktop ? (
-            <div className="min-h-0 flex-1 overflow-y-auto px-6 pt-4 pb-3 md:px-8">
-              {/* Dos columnas arriba y lo opcional en pestañas: la reserva cabe en una pantalla. */}
-              {/* Una columna: el flujo se lee de arriba abajo y entra en la pantalla. */}
-              <div className="grid gap-4">
-                <FormSection title="Reserva">
-                  <TourField draft={draft} errors={errors} onChange={change} />
-                  <ScheduleFields draft={draft} errors={errors} onChange={change} />
-                  <ClientField draft={draft} errors={errors} onChange={change} />
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <HotelField draft={draft} onChange={change} />
-                    <PickupField draft={draft} onChange={change} />
-                  </div>
-                </FormSection>
-
-                <FormSection
-                  title="Asignación y operación"
-                  collapsible
-                  defaultOpen={false}
-                  summary={[draft.guide || "sin guía", draft.driver || "sin chofer", draft.agent]
-                    .filter(Boolean)
-                    .join(", ")}
-                >
-                  <div className="grid gap-3 sm:grid-cols-3">
-                    <TeamFields draft={draft} onChange={change} />
-                    <AgentField draft={draft} onChange={change} />
-                  </div>
-                </FormSection>
-
-                <FormSection title="Pago">
-                  <PaymentFields
-                    draft={draft}
-                    onChange={change}
-                    trailing={<StatusField draft={draft} onChange={change} />}
-                  />
-                </FormSection>
-
-                <FormSection
-                  title="Detalles adicionales"
-                  collapsible
-                  defaultOpen={false}
-                  summary={extrasSummary}
-                >
-                  <ExtrasTabs draft={draft} onChange={change} />
-                </FormSection>
-              </div>
-            </div>
+            <DesktopFields draft={draft} errors={errors} onChange={change} />
           ) : (
             <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
               <div className="mb-4 flex items-start gap-2">
@@ -185,58 +122,18 @@ export function ReservationForm({
             </div>
           )}
 
-          <div className="flex shrink-0 items-center gap-3 border-t bg-surface-muted px-4 py-3 md:justify-end md:px-8">
-            {state.status === "error" && state.message ? (
-              <p className="mr-auto text-[13px] text-destructive" role="alert">
-                {state.message}
-              </p>
-            ) : null}
-            {isDesktop ? (
-              <>
-                <Button type="button" variant="outline" size="lg" onClick={onCancel}>
-                  Cancelar
-                </Button>
-                <Button
-                  type="submit"
-                  size="lg"
-                  disabled={saving}
-                  onClick={(event) => {
-                    if (blockedBeforeSubmit()) event.preventDefault()
-                  }}
-                >
-                  {saving ? "Guardando" : submitLabel}
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="lg"
-                  className="flex-1"
-                  onClick={() => (step === 0 ? onCancel() : setStep(step - 1))}
-                >
-                  {step === 0 ? "Cancelar" : "Atrás"}
-                </Button>
-                <Button
-                  // Solo el último paso envía; los anteriores solo avanzan.
-                  type={step === steps.length - 1 ? "submit" : "button"}
-                  size="lg"
-                  className="flex-1"
-                  disabled={saving}
-                  onClick={(event) => {
-                    if (step < steps.length - 1) {
-                      continueStep()
-                      return
-                    }
-                    if (blockedBeforeSubmit()) event.preventDefault()
-                  }}
-                >
-                  {step === steps.length - 1 ? (saving ? "Guardando" : submitLabel) : "Continuar"}
-                </Button>
-              </>
-            )}
-          </div>
+          <FormActions
+            isDesktop={isDesktop}
+            saving={saving}
+            submitLabel={submitLabel}
+            step={step}
+            stepCount={steps.length}
+            errorMessage={state.status === "error" ? state.message : undefined}
+            onCancel={onCancel}
+            onBack={() => setStep(step - 1)}
+            onContinue={continueStep}
+            isBlocked={blockedBeforeSubmit}
+          />
         </form>
       </Card>
     </div>
