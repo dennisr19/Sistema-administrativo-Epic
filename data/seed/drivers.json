@@ -1,0 +1,90 @@
+[
+  {
+    "id": "drv_ana-laura-miranda-palma",
+    "organizationId": "org_epic_ops",
+    "name": "Ana Laura Miranda Palma",
+    "phone": "89554397",
+    "license": null,
+    "active": true
+  },
+  {
+    "id": "drv_cesar-rios-arroyo",
+    "organizationId": "org_epic_ops",
+    "name": "Cesar Rios Arroyo",
+    "phone": "84750581",
+    "license": null,
+    "active": true
+  },
+  {
+    "id": "drv_chino",
+    "organizationId": "org_epic_ops",
+    "name": "Chino",
+    "phone": null,
+    "license": null,
+    "active": true
+  },
+  {
+    "id": "drv_christian-oso",
+    "organizationId": "org_epic_ops",
+    "name": "Christian Oso",
+    "phone": "86630268",
+    "license": null,
+    "active": true
+  },
+  {
+    "id": "drv_dennis-reyes-arias",
+    "organizationId": "org_epic_ops",
+    "name": "Dennis Reyes Arias",
+    "phone": "86664882",
+    "license": null,
+    "active": true
+  },
+  {
+    "id": "drv_ellos-llegan-solos",
+    "organizationId": "org_epic_ops",
+    "name": "Ellos Llegan Solos",
+    "phone": null,
+    "license": "Cliente",
+    "active": true
+  },
+  {
+    "id": "drv_ellos-siguen-al-guia",
+    "organizationId": "org_epic_ops",
+    "name": "Ellos Siguen al Guía",
+    "phone": null,
+    "license": null,
+    "active": true
+  },
+  {
+    "id": "drv_laura-cesar",
+    "organizationId": "org_epic_ops",
+    "name": "Laura & Cesar",
+    "phone": null,
+    "license": null,
+    "active": true
+  },
+  {
+    "id": "drv_pendiente",
+    "organizationId": "org_epic_ops",
+    "name": "Pendiente",
+    "phone": null,
+    "license": null,
+    "active": true
+  },
+  {
+    "id": "drv_taxi-keiner",
+    "organizationId": "org_epic_ops",
+    "name": "TAXI KEINER",
+    "phone": null,
+    "license": null,
+    "active": true
+  },
+  {
+    "id": "drv_taxi-yeiner",
+    "organizationId": "org_epic_ops",
+    "name": "TAXI YEINER",
+    "phone": null,
+    "license": null,
+    "active": true
+  }
+]

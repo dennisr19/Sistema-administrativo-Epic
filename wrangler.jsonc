@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sistema-administrativo-epic",
+  "account_id": "cc75b4038a372f10b0d3d7bf2b9579cf",
+  "main": ".open-next/worker.js",
+  "workers_dev": true,
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "vars": {
+    "BETTER_AUTH_URL": "https://sistema-administrativo-epic.dennis-cc7.workers.dev",
+    "RESEND_FROM": "Epic Adventures <no-reply@epicadventurescr.com>"
+  },
+  "secrets": {
+    "required": ["BETTER_AUTH_SECRET", "RESEND_API_KEY"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sistema-administrativo-epic",
+      "database_id": "d0f60992-45d4-4ab5-88bd-f215f150fa48",
+      "migrations_dir": "drizzle"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

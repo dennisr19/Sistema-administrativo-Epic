@@ -1,0 +1,1 @@
+ALTER TABLE `reservations` ADD `payment_pending` integer DEFAULT false NOT NULL;

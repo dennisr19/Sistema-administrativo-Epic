@@ -1,0 +1,13 @@
+# Copiar a .dev.vars y llenar. .dev.vars no se sube al repo.
+
+# Cualquier cadena larga y aleatoria sirve para desarrollo local.
+# Generarla con: node -e "console.log(require('node:crypto').randomBytes(32).toString('base64url'))"
+BETTER_AUTH_SECRET=""
+
+# Vacío en local: next dev deriva la URL del propio request.
+BETTER_AUTH_URL=""
+
+# Vacío en local: sin llave, el código de acceso se imprime en la consola del
+# servidor en vez de enviarse por correo. Rellenar solo para probar el envío real.
+RESEND_API_KEY=""
+RESEND_FROM="Epic Adventures <no-reply@epicadventurescr.com>"

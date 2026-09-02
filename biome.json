@@ -1,0 +1,44 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.11/schema.json",
+  "files": {
+    "includes": [
+      "**",
+      "!next-env.d.ts",
+      "!**/.agent-work",
+      "!**/.impeccable",
+      "!**/.next",
+      "!**/node_modules",
+      "!worker-configuration.d.ts",
+      "!**/drizzle",
+      "!**/data/seed",
+      "!**/.wrangler",
+      "!**/.open-next"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "lineWidth": 100
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "asNeeded",
+      "trailingCommas": "all"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "suspicious": {
+        "noAssignInExpressions": "off"
+      }
+    }
+  }
+}

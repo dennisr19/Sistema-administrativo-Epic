@@ -1,0 +1,37 @@
+[
+  {
+    "id": "meal_pollo",
+    "organizationId": "org_epic_ops",
+    "name": "Pollo",
+    "priceCents": 0,
+    "active": true
+  },
+  {
+    "id": "meal_pescado",
+    "organizationId": "org_epic_ops",
+    "name": "Pescado",
+    "priceCents": 0,
+    "active": true
+  },
+  {
+    "id": "meal_vegetariano",
+    "organizationId": "org_epic_ops",
+    "name": "Vegetariano",
+    "priceCents": 0,
+    "active": true
+  },
+  {
+    "id": "meal_vegano",
+    "organizationId": "org_epic_ops",
+    "name": "Vegano",
+    "priceCents": 0,
+    "active": true
+  },
+  {
+    "id": "meal_sin-gluten",
+    "organizationId": "org_epic_ops",
+    "name": "Sin gluten",
+    "priceCents": 0,
+    "active": true
+  }
+]

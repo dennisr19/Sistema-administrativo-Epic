@@ -1,0 +1,162 @@
+[
+  {
+    "id": "tour_caminata-en-los-altos",
+    "organizationId": "org_epic_ops",
+    "name": "Caminata en los altos",
+    "description": null,
+    "priceCents": 0,
+    "active": true
+  },
+  {
+    "id": "tour_manglar-bote-cocal",
+    "organizationId": "org_epic_ops",
+    "name": "Manglar bote Cocal",
+    "description": null,
+    "priceCents": 0,
+    "active": true
+  },
+  {
+    "id": "tour_nauyaca-waterfalls-tour",
+    "organizationId": "org_epic_ops",
+    "name": "Nauyaca Waterfalls Tour",
+    "description": "Transporte y Almuerzo Incluido 7:45 AM",
+    "priceCents": 12500,
+    "active": true
+  },
+  {
+    "id": "tour_one-day-corcovado",
+    "organizationId": "org_epic_ops",
+    "name": "One day corcovado",
+    "description": null,
+    "priceCents": 0,
+    "active": true
+  },
+  {
+    "id": "tour_one-day-isla-del-cano",
+    "organizationId": "org_epic_ops",
+    "name": "One day Isla del Caño",
+    "description": null,
+    "priceCents": 0,
+    "active": true
+  },
+  {
+    "id": "tour_parque-nacional-manuel-antonio",
+    "organizationId": "org_epic_ops",
+    "name": "Parque Nacional Manuel Antonio",
+    "description": "Caminata Guiada al parque Nacional",
+    "priceCents": 6000,
+    "active": true
+  },
+  {
+    "id": "tour_parque-nacional-manuel-antonio-privado",
+    "organizationId": "org_epic_ops",
+    "name": "Parque Nacional Manuel Antonio Privado",
+    "description": "Caminata Exclusiva",
+    "priceCents": 9500,
+    "active": true
+  },
+  {
+    "id": "tour_privado-tour-de-bote-al-manglar",
+    "organizationId": "org_epic_ops",
+    "name": "Privado Tour de Bote al Manglar",
+    "description": "Tour exclusivo de bote al manglar de Damas",
+    "priceCents": 12500,
+    "active": true
+  },
+  {
+    "id": "tour_privado-tour-kayak",
+    "organizationId": "org_epic_ops",
+    "name": "Privado Tour Kayak",
+    "description": "Tour Privado en Kayak al Manglar Cocal de Quepos",
+    "priceCents": 12500,
+    "active": true
+  },
+  {
+    "id": "tour_sea-kayaking-tour",
+    "organizationId": "org_epic_ops",
+    "name": "Sea Kayaking Tour",
+    "description": "8:00 AM, 12:00 MD Transporte y Almuerzo Incluidos",
+    "priceCents": 7500,
+    "active": true
+  },
+  {
+    "id": "tour_tour-al-parque-en-frances-privado",
+    "organizationId": "org_epic_ops",
+    "name": "Tour al Parque en frances privado",
+    "description": null,
+    "priceCents": 0,
+    "active": true
+  },
+  {
+    "id": "tour_tour-de-bote-al-manglar-dia",
+    "organizationId": "org_epic_ops",
+    "name": "Tour de Bote al Manglar Día",
+    "description": "8:30 AM o 1:00 PM, almuerzo incluido.",
+    "priceCents": 7500,
+    "active": true
+  },
+  {
+    "id": "tour_tour-de-bote-nocturno-al-manglar",
+    "organizationId": "org_epic_ops",
+    "name": "Tour de Bote Nocturno al Manglar",
+    "description": "5:30 PM, Transporte y Cena incluidos",
+    "priceCents": 8000,
+    "active": true
+  },
+  {
+    "id": "tour_tour-de-caminata-a-rainmaker",
+    "organizationId": "org_epic_ops",
+    "name": "Tour de Caminata a Rainmaker",
+    "description": "Almuerzo y Transporte Incluidos",
+    "priceCents": 8500,
+    "active": true
+  },
+  {
+    "id": "tour_tour-de-kayak-al-manglar",
+    "organizationId": "org_epic_ops",
+    "name": "Tour de Kayak al Manglar",
+    "description": "Cocal de Quepos, transporte y almuerzo incluidos",
+    "priceCents": 7500,
+    "active": true
+  },
+  {
+    "id": "tour_tour-nocturno-en-sukia",
+    "organizationId": "org_epic_ops",
+    "name": "Tour Nocturno en Sukia",
+    "description": "Caminata Nocturna en Sukia, Manuel Antonio.",
+    "priceCents": 6000,
+    "active": true
+  },
+  {
+    "id": "tour_transfer-a-jaco-ida-y-vuelta",
+    "organizationId": "org_epic_ops",
+    "name": "Transfer a Jaco Ida y Vuelta",
+    "description": null,
+    "priceCents": 0,
+    "active": true
+  },
+  {
+    "id": "tour_transfer-de-quepos-a-uvita",
+    "organizationId": "org_epic_ops",
+    "name": "Transfer de Quepos a Uvita",
+    "description": null,
+    "priceCents": 0,
+    "active": true
+  },
+  {
+    "id": "tour_transfer-local",
+    "organizationId": "org_epic_ops",
+    "name": "Transfer local",
+    "description": null,
+    "priceCents": 0,
+    "active": true
+  },
+  {
+    "id": "tour_transfer-out-manuel-antonio-alajuela",
+    "organizationId": "org_epic_ops",
+    "name": "Transfer out - Manuel Antonio - Alajuela",
+    "description": "Transporte terrestre",
+    "priceCents": 0,
+    "active": true
+  }
+]

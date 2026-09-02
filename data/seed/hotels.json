@@ -1,0 +1,533 @@
+[
+  {
+    "id": "htl_aeropuerto-loca-la-managua",
+    "organizationId": "org_epic_ops",
+    "name": "Aeropuerto Loca La Managua",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_airbnb-en-manuel-antono",
+    "organizationId": "org_epic_ops",
+    "name": "Airbnb en Manuel Antono",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_alma-vida",
+    "organizationId": "org_epic_ops",
+    "name": "Alma Vida",
+    "phone": "71491629",
+    "address": "MANUEL ANTONIO, QUEPOS",
+    "email": "reception@almavidahotel.com",
+    "active": true
+  },
+  {
+    "id": "htl_arbnb-marilyn-villegas",
+    "organizationId": "org_epic_ops",
+    "name": "ARBNB marilyn villegas",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_arenas-del-mar",
+    "organizationId": "org_epic_ops",
+    "name": "Arenas del Mar",
+    "phone": "18883859218",
+    "address": "MANUEL ANTONIO, QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_casa",
+    "organizationId": "org_epic_ops",
+    "name": "Casa",
+    "phone": "86664882",
+    "address": "CALLE MEJÍAS",
+    "email": "info@epicadventures.com",
+    "active": true
+  },
+  {
+    "id": "htl_casa-alta",
+    "organizationId": "org_epic_ops",
+    "name": "Casa Alta",
+    "phone": null,
+    "address": "CASA ALTA",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_casa-canopy-en-la-reserva",
+    "organizationId": "org_epic_ops",
+    "name": "Casa Canopy en la Reserva",
+    "phone": null,
+    "address": "CASA CANOPY EN LA RESERVA",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_casa-de-ashley",
+    "organizationId": "org_epic_ops",
+    "name": "Casa de Ashley",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_casa-el-salto",
+    "organizationId": "org_epic_ops",
+    "name": "CASA EL SALTO",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_casa-zen",
+    "organizationId": "org_epic_ops",
+    "name": "CASA ZEN",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_centro-comercial-frente-a-pizza-hut",
+    "organizationId": "org_epic_ops",
+    "name": "Centro comercial frente a Pizza hut",
+    "phone": "86664882",
+    "address": "PAQUITA DE QUEPOS",
+    "email": "info@epicadventurescr.com",
+    "active": true
+  },
+  {
+    "id": "htl_costa-verde",
+    "organizationId": "org_epic_ops",
+    "name": "COSTA VERDE",
+    "phone": null,
+    "address": "MANUEL ANTONIO",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_croc-s-hotel-resort",
+    "organizationId": "org_epic_ops",
+    "name": "Croc´s Hotel Resort",
+    "phone": null,
+    "address": "JACÓ, PUNTARENAS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_divisamar",
+    "organizationId": "org_epic_ops",
+    "name": "Divisamar",
+    "phone": "27770371",
+    "address": "MANUEL ANTONIO QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_ecotica",
+    "organizationId": "org_epic_ops",
+    "name": "Ecotica",
+    "phone": null,
+    "address": "MANUEL ANTONIO",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_el-avion-restaurante",
+    "organizationId": "org_epic_ops",
+    "name": "El Avión Restaurante",
+    "phone": null,
+    "address": "MANUEL ANTONIO, QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_el-faro-beach-hotel",
+    "organizationId": "org_epic_ops",
+    "name": "El Faro Beach Hotel",
+    "phone": "27774025",
+    "address": "MANUEL ANTONIO QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_ellos-llegan-a-la-oficina",
+    "organizationId": "org_epic_ops",
+    "name": "Ellos llegan a la Oficina",
+    "phone": "86664882",
+    "address": "CASA",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_esquipulas-rainforest",
+    "organizationId": "org_epic_ops",
+    "name": "Esquipulas rainforest",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_hotel-layan",
+    "organizationId": "org_epic_ops",
+    "name": "Hotel Layan",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_hotel-manuel-antonio",
+    "organizationId": "org_epic_ops",
+    "name": "Hotel Manuel Antonio",
+    "phone": "27771351",
+    "address": "MANUEL ANTONIO QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_hotel-manuel-antonio-park",
+    "organizationId": "org_epic_ops",
+    "name": "Hotel Manuel Antonio Park",
+    "phone": "27770225",
+    "address": "MANUEL ANTONIO, QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_hotel-pendiente",
+    "organizationId": "org_epic_ops",
+    "name": "Hotel Pendiente",
+    "phone": null,
+    "address": "MANUEL ANTONIO, QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_jungle-tree-house",
+    "organizationId": "org_epic_ops",
+    "name": "Jungle tree house",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_jungle-vista",
+    "organizationId": "org_epic_ops",
+    "name": "Jungle Vista",
+    "phone": "61722619",
+    "address": "MANUEL ANTONIO, QUEPOS",
+    "email": "junglevistafrontdesk@gmail.com",
+    "active": true
+  },
+  {
+    "id": "htl_laguna-eco-lodge-pueblo-real",
+    "organizationId": "org_epic_ops",
+    "name": "LAGUNA ECO LODGE (PUEBLO REAL )",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_le-priss",
+    "organizationId": "org_epic_ops",
+    "name": "Le Priss",
+    "phone": "27770719",
+    "address": "QUEPOS, PUNTARENAS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_los-almendros",
+    "organizationId": "org_epic_ops",
+    "name": "LOS ALMENDROS",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_los-altos",
+    "organizationId": "org_epic_ops",
+    "name": "Los Altos",
+    "phone": "27778888",
+    "address": "MANUEL ANTONIO, QUEPOS",
+    "email": "losaltosresortfrontdesk@gmail.com",
+    "active": true
+  },
+  {
+    "id": "htl_macaw-nest",
+    "organizationId": "org_epic_ops",
+    "name": "Macaw Nest",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_marina-pez-vela",
+    "organizationId": "org_epic_ops",
+    "name": "Marina Pez Vela",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_mono-azul",
+    "organizationId": "org_epic_ops",
+    "name": "Mono azul",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_mountain-top-park",
+    "organizationId": "org_epic_ops",
+    "name": "Mountain Top Park",
+    "phone": "87805449",
+    "address": "MANUEL ANTONIO QUEPOS",
+    "email": "info@mountaintoppark.com",
+    "active": true
+  },
+  {
+    "id": "htl_oficina-epic",
+    "organizationId": "org_epic_ops",
+    "name": "OFICINA EPIC",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_parador",
+    "organizationId": "org_epic_ops",
+    "name": "Parador",
+    "phone": "27771414",
+    "address": "MANUEL ANTONIO QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_parqueo-agua-azul",
+    "organizationId": "org_epic_ops",
+    "name": "Parqueo Agua Azul",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_planeta-sano",
+    "organizationId": "org_epic_ops",
+    "name": "Planeta Sano",
+    "phone": null,
+    "address": "MANUEL ANTONIO, QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_portasol-living",
+    "organizationId": "org_epic_ops",
+    "name": "Portasol Living",
+    "phone": "85079393",
+    "address": "PORTALON",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_porton-de-parque",
+    "organizationId": "org_epic_ops",
+    "name": "Porton de Parque",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_pura-vida-casas",
+    "organizationId": "org_epic_ops",
+    "name": "Pura Vida Casas",
+    "phone": "87177111",
+    "address": "ESTERILLOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_rana-bocona",
+    "organizationId": "org_epic_ops",
+    "name": "Rana Bocona",
+    "phone": "27772798",
+    "address": "QUEPOS, PUNTARENAS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_rotonda-manuel-antonio",
+    "organizationId": "org_epic_ops",
+    "name": "ROTONDA MANUEL ANTONIO",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_san-bada",
+    "organizationId": "org_epic_ops",
+    "name": "San Bada",
+    "phone": "27775333",
+    "address": "MANUEL ANTONIO QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_shana-by-the-beach",
+    "organizationId": "org_epic_ops",
+    "name": "Shana By the Beach",
+    "phone": "40707373",
+    "address": "MANUEL ANTONIO, QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_si-como-no",
+    "organizationId": "org_epic_ops",
+    "name": "Si Como No",
+    "phone": null,
+    "address": "MANUEL ANTONIO, QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_teva-hotel",
+    "organizationId": "org_epic_ops",
+    "name": "Teva Hotel",
+    "phone": "88722111",
+    "address": "MANUEL ANTONIO, QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_the-falls",
+    "organizationId": "org_epic_ops",
+    "name": "The Falls",
+    "phone": "87676011",
+    "address": "MANUEL ANTONIO, QUEPOS",
+    "email": "info@fallsresortcr.com",
+    "active": true
+  },
+  {
+    "id": "htl_tulemar",
+    "organizationId": "org_epic_ops",
+    "name": "TULEMAR",
+    "phone": null,
+    "address": "MANUEL ANTONIO",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_villa-lirio",
+    "organizationId": "org_epic_ops",
+    "name": "Villa Lirio",
+    "phone": "27771182",
+    "address": "MANUEL ANTONIO, QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_villa-ludmila",
+    "organizationId": "org_epic_ops",
+    "name": "Villa Ludmila",
+    "phone": "84281667",
+    "address": "VALLE PURA VIDA",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_villa-mariana",
+    "organizationId": "org_epic_ops",
+    "name": "Villa Mariana",
+    "phone": null,
+    "address": "MANUEL ANTONIO",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_villa-pereso",
+    "organizationId": "org_epic_ops",
+    "name": "Villa Pereso",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_villa-perezoso",
+    "organizationId": "org_epic_ops",
+    "name": "Villa Perezoso",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_villa-pratts",
+    "organizationId": "org_epic_ops",
+    "name": "Villa Pratts",
+    "phone": null,
+    "address": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_villa-roca",
+    "organizationId": "org_epic_ops",
+    "name": "Villa Roca",
+    "phone": "85710259",
+    "address": "MANUEL ANTONIO, QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_villa-romantica",
+    "organizationId": "org_epic_ops",
+    "name": "Villa Romántica",
+    "phone": "27770037",
+    "address": "QUEPOS PUNTARENAS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_villa-tanager",
+    "organizationId": "org_epic_ops",
+    "name": "Villa Tanager",
+    "phone": "88089300",
+    "address": "QUEPOS",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "htl_vista-ocean-suites",
+    "organizationId": "org_epic_ops",
+    "name": "Vista Ocean Suites",
+    "phone": "89840634",
+    "address": "MANUEL ANTONIO, QUEPOS",
+    "email": null,
+    "active": true
+  }
+]

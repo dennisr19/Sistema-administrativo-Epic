@@ -1,0 +1,202 @@
+[
+  {
+    "id": "gui_andrey-guide",
+    "organizationId": "org_epic_ops",
+    "name": "Andrey Guide",
+    "phone": "88226432",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_ariel-guide",
+    "organizationId": "org_epic_ops",
+    "name": "Ariel Guide",
+    "phone": "70226576",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_axel-retana-siles",
+    "organizationId": "org_epic_ops",
+    "name": "Axel Retana Siles",
+    "phone": "88466149",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_brenda-conejo",
+    "organizationId": "org_epic_ops",
+    "name": "Brenda & Conejo",
+    "phone": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_brenda-vindas-jimenez",
+    "organizationId": "org_epic_ops",
+    "name": "Brenda Vindas Jiménez",
+    "phone": "62709029",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_cesar-brenda",
+    "organizationId": "org_epic_ops",
+    "name": "Cesar & Brenda",
+    "phone": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_cesar-rios-arroyo",
+    "organizationId": "org_epic_ops",
+    "name": "Cesar Rios Arroyo",
+    "phone": "84750581",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_colochiny",
+    "organizationId": "org_epic_ops",
+    "name": "Colochiny",
+    "phone": "88163226",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_dennis-brenda",
+    "organizationId": "org_epic_ops",
+    "name": "Dennis & Brenda",
+    "phone": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_dennis-cesar",
+    "organizationId": "org_epic_ops",
+    "name": "Dennis & Cesar",
+    "phone": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_dennis-conejo",
+    "organizationId": "org_epic_ops",
+    "name": "Dennis & Conejo",
+    "phone": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_dennis-reyes-arias",
+    "organizationId": "org_epic_ops",
+    "name": "Dennis Reyes Arias",
+    "phone": "86664882",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_gerber-vindas",
+    "organizationId": "org_epic_ops",
+    "name": "GERBER VINDAS",
+    "phone": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_jharoth",
+    "organizationId": "org_epic_ops",
+    "name": "JHAROTH",
+    "phone": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_jorge-conejo",
+    "organizationId": "org_epic_ops",
+    "name": "Jorge Conejo",
+    "phone": "83144750",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_kevin-garita",
+    "organizationId": "org_epic_ops",
+    "name": "Kevin Garita",
+    "phone": "85601342",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_lisandro-carrillo",
+    "organizationId": "org_epic_ops",
+    "name": "Lisandro Carrillo",
+    "phone": "89508992",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_maikel",
+    "organizationId": "org_epic_ops",
+    "name": "Maikel",
+    "phone": "88116671",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_mauricio-sanchez",
+    "organizationId": "org_epic_ops",
+    "name": "Mauricio Sanchez",
+    "phone": "88409973",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_minor-hidalgo",
+    "organizationId": "org_epic_ops",
+    "name": "Minor Hidalgo",
+    "phone": "87584991",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_mop",
+    "organizationId": "org_epic_ops",
+    "name": "Mop",
+    "phone": "85136321",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_nicole-jimenez-delgado",
+    "organizationId": "org_epic_ops",
+    "name": "Nicole Jimenez Delgado",
+    "phone": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_pendiente",
+    "organizationId": "org_epic_ops",
+    "name": "Pendiente",
+    "phone": null,
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_raul-guide",
+    "organizationId": "org_epic_ops",
+    "name": "Raul Guide",
+    "phone": "84932727",
+    "email": null,
+    "active": true
+  },
+  {
+    "id": "gui_steven-siles",
+    "organizationId": "org_epic_ops",
+    "name": "Steven Siles",
+    "phone": "84478702",
+    "email": "silesacuasteven@gmail.com",
+    "active": true
+  }
+]
