@@ -33,32 +33,70 @@ async function loadCatalogs(organizationId: string): Promise<Catalogs> {
   const client = await db()
   const [tourRows, guideRows, driverRows, hotelRows, agentRows, mealRows] = await Promise.all([
     client
-      .select()
+      .select({
+        id: tours.id,
+        name: tours.name,
+        active: tours.active,
+        description: tours.description,
+        priceCents: tours.priceCents,
+        kind: tours.kind,
+        includesMeals: tours.includesMeals,
+      })
       .from(tours)
       .where(eq(tours.organizationId, organizationId))
       .orderBy(asc(tours.name)),
     client
-      .select()
+      .select({
+        id: guides.id,
+        name: guides.name,
+        active: guides.active,
+        phone: guides.phone,
+        email: guides.email,
+      })
       .from(guides)
       .where(eq(guides.organizationId, organizationId))
       .orderBy(asc(guides.name)),
     client
-      .select()
+      .select({
+        id: drivers.id,
+        name: drivers.name,
+        active: drivers.active,
+        phone: drivers.phone,
+        license: drivers.license,
+      })
       .from(drivers)
       .where(eq(drivers.organizationId, organizationId))
       .orderBy(asc(drivers.name)),
     client
-      .select()
+      .select({
+        id: hotels.id,
+        name: hotels.name,
+        active: hotels.active,
+        phone: hotels.phone,
+        address: hotels.address,
+        email: hotels.email,
+      })
       .from(hotels)
       .where(eq(hotels.organizationId, organizationId))
       .orderBy(asc(hotels.name)),
     client
-      .select()
+      .select({
+        id: agents.id,
+        name: agents.name,
+        active: agents.active,
+        phone: agents.phone,
+        company: agents.company,
+        email: agents.email,
+      })
       .from(agents)
       .where(eq(agents.organizationId, organizationId))
       .orderBy(asc(agents.name)),
     client
-      .select()
+      .select({
+        id: mealOptions.id,
+        name: mealOptions.name,
+        active: mealOptions.active,
+      })
       .from(mealOptions)
       .where(eq(mealOptions.organizationId, organizationId))
       .orderBy(asc(mealOptions.name)),
