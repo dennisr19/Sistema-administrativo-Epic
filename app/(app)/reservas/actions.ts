@@ -39,5 +39,9 @@ export async function saveReservationAction(
 
   // Toca la operación del día, el historial y los reportes.
   revalidatePath("/", "layout")
-  redirect("/reservas")
+  // El redirect corta la ejecución: el form nunca ve un estado de "éxito"
+  // que mostrar. La bandera en la URL es lo que le dice a la lista, ya del
+  // otro lado, que muestre la confirmación — la lee una vez y la limpia.
+  const flag = parsed.data.id ? "actualizada" : "creada"
+  redirect(`/reservas?${flag}=1`)
 }

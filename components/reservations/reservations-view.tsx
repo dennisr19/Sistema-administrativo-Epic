@@ -17,6 +17,7 @@ import {
 import { ReservationsList } from "@/components/reservations/reservations-list"
 import { ReservationsTable } from "@/components/reservations/reservations-table"
 import { useReservationNavigation } from "@/components/reservations/use-reservation-navigation"
+import { useSavedToast } from "@/components/reservations/use-saved-toast"
 import { SegmentedTabs } from "@/components/segmented-tabs"
 import { ReservationDetailSheet } from "@/components/today/reservation-detail-sheet"
 import { Button } from "@/components/ui/button"
@@ -64,6 +65,7 @@ export function ReservationsView({
   pageSize,
 }: ReservationsViewProps) {
   const router = useRouter()
+  useSavedToast()
   const results = use(resultsPromise)
   const coverage = use(coveragePromise)
   const totals = use(totalsPromise)

@@ -17,6 +17,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet"
+import { useToast } from "@/components/ui/toast"
 import type { EntityDefinition, EntityRecord } from "@/lib/entities"
 import { initialEntityActionState } from "@/lib/entity-action-state"
 
@@ -42,6 +43,7 @@ export function EntityFormSheet({
   )
   const [state, setState] = useState(initialEntityActionState)
   const [pending, startTransition] = useTransition()
+  const toast = useToast()
 
   const update = (patch: Partial<EntityRecord>) => setDraft((current) => ({ ...current, ...patch }))
 
@@ -52,7 +54,9 @@ export function EntityFormSheet({
     startTransition(async () => {
       const result = await saveEntityAction(state, formData)
       if (result.status === "success") {
-        onSaved?.(draft.name.trim())
+        const name = draft.name.trim()
+        toast.add({ type: "success", title: record ? `${name} actualizado` : `${name} creado` })
+        onSaved?.(name)
         onClose()
         return
       }
