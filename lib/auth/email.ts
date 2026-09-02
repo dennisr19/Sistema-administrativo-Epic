@@ -9,18 +9,18 @@ type OtpEmail = { to: string; code: string; from: string; apiKey: string; minute
 const body = (code: string, minutes: number) => `
   <div style="margin:0;padding:32px 16px;background-color:#f3f5f8;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">
     <div style="max-width:420px;margin:0 auto;background-color:#ffffff;border-radius:20px;overflow:hidden;border:1px solid #e5e9ef">
-      <div style="padding:28px 32px;border-bottom:1px solid #eef1f5">
-        <table role="presentation" cellpadding="0" cellspacing="0">
+      <div style="padding:28px 32px;border-bottom:1px solid #eef1f5;text-align:center">
+        <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto">
           <tr>
-            <td style="width:36px;height:36px;border-radius:9999px;background-color:#1a7a52;text-align:center;vertical-align:middle;font-size:16px;font-weight:700;color:#ffffff">S</td>
+            <td style="width:36px;height:36px;border-radius:9999px;background-color:#1a7a52;text-align:center;vertical-align:middle;font-size:18px;line-height:36px">🧭</td>
             <td style="padding-left:10px;font-size:15px;font-weight:600;letter-spacing:-0.01em;color:#192230">
-              Sistema Administrativo Epic
+              Epic Adventures
             </td>
           </tr>
         </table>
       </div>
 
-      <div style="padding:32px">
+      <div style="padding:32px;text-align:center">
         <p style="margin:0 0 20px;font-size:15px;color:#556376">Tu código para entrar es</p>
         <p style="margin:0 0 20px;font-size:38px;font-weight:700;letter-spacing:0.14em;color:#192230">${code}</p>
         <p style="margin:0;font-size:14px;line-height:1.5;color:#556376">
@@ -29,7 +29,7 @@ const body = (code: string, minutes: number) => `
       </div>
     </div>
     <p style="max-width:420px;margin:20px auto 0;padding:0 8px;font-size:12px;color:#9aa4b2;text-align:center">
-      Sistema Administrativo Epic &middot; correo automático, no respondas a este mensaje.
+      Epic Adventures &middot; correo automático, no respondas a este mensaje.
     </p>
   </div>`
 
@@ -51,7 +51,7 @@ export async function sendOtpEmail({ to, code, from, apiKey, minutes }: OtpEmail
     body: JSON.stringify({
       from,
       to,
-      subject: `${code} es tu código de Sistema Administrativo Epic`,
+      subject: `${code} es tu código de Epic Adventures`,
       html: body(code, minutes),
     }),
   })
