@@ -1,7 +1,5 @@
 import type { Metadata } from "next"
-import { Suspense } from "react"
 
-import { ReportsSkeleton } from "@/components/reports/reports-skeleton"
 import { ReportsWorkspace } from "@/components/reports/reports-workspace"
 import { getReport } from "@/db/queries/report"
 import { requireSession } from "@/lib/auth/server"
@@ -29,11 +27,9 @@ export default async function ReportsPage({
       ? { from: params.desde as string, to: params.hasta as string }
       : rangeOf(preset === "custom" ? "month" : preset)
 
+  // Sin await y sin Suspense envolvente: el informe tiene el suyo dentro de
+  // la vista, así que el encabezado y los controles de periodo no lo esperan.
   const reportPromise = getReport(organizationId, range.from, range.to)
 
-  return (
-    <Suspense fallback={<ReportsSkeleton />}>
-      <ReportsWorkspace reportPromise={reportPromise} preset={preset} range={range} />
-    </Suspense>
-  )
+  return <ReportsWorkspace reportPromise={reportPromise} preset={preset} range={range} />
 }

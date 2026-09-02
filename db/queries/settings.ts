@@ -213,14 +213,20 @@ async function activeCatalog(
   }
 }
 
-export const getSettingsData = cache(
-  async (organizationId: string, kind: EntityKind): Promise<SettingsData> => {
-    const client = await db()
-    const [active, counts] = await Promise.all([
-      activeCatalog(client, organizationId, kind),
-      catalogCounts(client, organizationId),
-    ])
+/**
+ * Las dos mitades van por separado y no en un solo `Promise.all`: los seis
+ * enteros del menú lateral son una consulta trivial y el catálogo activo es
+ * la pesada. Separadas, cada bloque de la pantalla suspende por su cuenta y
+ * el menú no espera a la tabla.
+ */
+export const getCatalogCounts = cache(async (organizationId: string) => {
+  const client = await db()
+  return catalogCounts(client, organizationId)
+})
 
-    return { kind, ...active, counts }
+export const getActiveCatalog = cache(
+  async (organizationId: string, kind: EntityKind): Promise<ActiveData> => {
+    const client = await db()
+    return activeCatalog(client, organizationId, kind)
   },
 )

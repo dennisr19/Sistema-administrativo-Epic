@@ -2,29 +2,40 @@
 
 import { IconPlus } from "@tabler/icons-react"
 import { useRouter } from "next/navigation"
-import { use, useOptimistic, useTransition } from "react"
+import { Suspense, use, useOptimistic, useTransition } from "react"
 
 import { PageHeader } from "@/components/page-header"
 import { EntityFormSheet } from "@/components/settings/entity-form-sheet"
-import { EntityNav } from "@/components/settings/entity-nav"
-import { SettingsCatalogPanel } from "@/components/settings/settings-catalog-panel"
+import {
+  type Catalog,
+  NavFallback,
+  PanelFallback,
+  SettingsNav,
+  SettingsPanel,
+} from "@/components/settings/settings-blocks"
 import { SettingsStoreProvider, useSettingsStore } from "@/components/settings/settings-store"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { definitionOf, type EntityKind, type SettingsData } from "@/lib/entities"
+import { definitionOf, type EntityKind } from "@/lib/entities"
 import { cn } from "@/lib/utils"
 
+type SettingsWorkspaceProps = {
+  /** Sale de la URL, no de la base: se sabe sin esperar a D1. */
+  kind: EntityKind
+  countsPromise: Promise<Record<EntityKind, number>>
+  catalogPromise: Promise<Catalog>
+}
+
 /** Le da a `SettingsWorkspaceContent` su propio store: uno por montaje, no uno por módulo. */
-export function SettingsWorkspace({ dataPromise }: { dataPromise: Promise<SettingsData> }) {
+export function SettingsWorkspace(props: SettingsWorkspaceProps) {
   return (
     <SettingsStoreProvider>
-      <SettingsWorkspaceContent dataPromise={dataPromise} />
+      <SettingsWorkspaceContent {...props} />
     </SettingsStoreProvider>
   )
 }
 
-function SettingsWorkspaceContent({ dataPromise }: { dataPromise: Promise<SettingsData> }) {
-  const { kind, records, usage, counts } = use(dataPromise)
+function SettingsWorkspaceContent({ kind, countsPromise, catalogPromise }: SettingsWorkspaceProps) {
   const router = useRouter()
   const [optimisticKind, setOptimisticKind] = useOptimistic(kind)
   const [pending, beginNavigation] = useTransition()
@@ -37,7 +48,6 @@ function SettingsWorkspaceContent({ dataPromise }: { dataPromise: Promise<Settin
 
   const definition = definitionOf(kind)
   const visibleDefinition = definitionOf(optimisticKind)
-  const editing = records.find((record) => record.id === editingId) ?? null
   const href = (next: EntityKind) => `/configuracion?tipo=${next}`
 
   const select = (next: EntityKind) => {
@@ -73,12 +83,14 @@ function SettingsWorkspaceContent({ dataPromise }: { dataPromise: Promise<Settin
       <Card className="min-h-0 gap-0 overflow-hidden rounded-xl border-0 py-0">
         <div className="flex min-h-0 flex-1 md:divide-x">
           <div className={cn("w-full md:w-auto md:shrink-0", openOnMobile && "hidden md:block")}>
-            <EntityNav
-              kind={optimisticKind}
-              counts={counts}
-              onSelect={select}
-              onPrefetch={prefetch}
-            />
+            <Suspense fallback={<NavFallback />}>
+              <SettingsNav
+                promise={countsPromise}
+                kind={optimisticKind}
+                onSelect={select}
+                onPrefetch={prefetch}
+              />
+            </Suspense>
           </div>
 
           <section
@@ -87,20 +99,64 @@ function SettingsWorkspaceContent({ dataPromise }: { dataPromise: Promise<Settin
               !openOnMobile && "hidden md:flex",
             )}
           >
-            <SettingsCatalogPanel
-              definition={visibleDefinition}
-              kind={kind}
-              records={records}
-              usage={usage}
-              pending={pending}
-            />
+            <Suspense fallback={<PanelFallback />}>
+              <SettingsPanel
+                promise={catalogPromise}
+                definition={visibleDefinition}
+                kind={kind}
+                pending={pending}
+              />
+            </Suspense>
           </section>
         </div>
       </Card>
 
-      {creating || editing ? (
-        <EntityFormSheet definition={definition} record={editing} onClose={closeForm} />
+      {creating || editingId ? (
+        <EditSheet definition={definition} promise={catalogPromise} onClose={closeForm} />
       ) : null}
     </div>
   )
+}
+
+/**
+ * El registro que se edita sale del catálogo ya cargado; si el panel todavía
+ * no resolvió, esto espera con él en vez de bloquear la pantalla entera.
+ */
+function EditSheet({
+  definition,
+  promise,
+  onClose,
+}: {
+  definition: ReturnType<typeof definitionOf>
+  promise: Promise<Catalog>
+  onClose: () => void
+}) {
+  const editingId = useSettingsStore((state) => state.editingId)
+
+  return (
+    <Suspense fallback={null}>
+      <EditSheetContent
+        definition={definition}
+        promise={promise}
+        editingId={editingId}
+        onClose={onClose}
+      />
+    </Suspense>
+  )
+}
+
+function EditSheetContent({
+  definition,
+  promise,
+  editingId,
+  onClose,
+}: {
+  definition: ReturnType<typeof definitionOf>
+  promise: Promise<Catalog>
+  editingId: string | null
+  onClose: () => void
+}) {
+  const { records } = use(promise)
+  const editing = records.find((record) => record.id === editingId) ?? null
+  return <EntityFormSheet definition={definition} record={editing} onClose={onClose} />
 }
