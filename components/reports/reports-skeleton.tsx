@@ -1,3 +1,7 @@
+"use client"
+
+import { PageHeader } from "@/components/page-header"
+
 /**
  * Misma silueta que `ReportsWorkspace`: sin una card que envuelva todo (la
  * página real tampoco tiene una, cada bloque es su propia superficie), en el
@@ -10,7 +14,7 @@ export function ReportsSkeleton() {
 
   return (
     <div className="grid h-full min-h-0 grid-rows-[minmax(0,1fr)] gap-0 md:grid-rows-[auto_minmax(0,1fr)] md:gap-4">
-      <div className="hidden h-[76px] md:block" />
+      <PageHeader title="Reportes" subtitle="Analiza el rendimiento del negocio" action={null} />
 
       <div className="min-h-0 overflow-y-auto pb-1">
         <div className="grid gap-3">

@@ -1,3 +1,7 @@
+"use client"
+
+import { PageHeader } from "@/components/page-header"
+
 export function SettingsSkeleton() {
   const pulse = "animate-pulse rounded-lg bg-muted"
   const navigationRows = ["tours", "guides", "drivers", "hotels", "agents", "meals"]
@@ -5,13 +9,11 @@ export function SettingsSkeleton() {
 
   return (
     <div className="grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)] gap-5">
-      <div className="flex items-center justify-between">
-        <div className="space-y-2">
-          <div className={`${pulse} h-8 w-44`} />
-          <div className={`${pulse} h-4 w-56`} />
-        </div>
-        <div className={`${pulse} h-11 w-36 rounded-full`} />
-      </div>
+      <PageHeader
+        title="Configuración"
+        subtitle="Lo que alimenta las reservas"
+        action={<div className={`${pulse} h-11 w-40 rounded-lg`} />}
+      />
       <div className="grid min-h-0 grid-cols-[228px_1fr] overflow-hidden rounded-xl bg-card">
         <div className="space-y-3 border-r p-4">
           {navigationRows.map((row) => (

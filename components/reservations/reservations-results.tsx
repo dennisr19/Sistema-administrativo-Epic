@@ -7,7 +7,9 @@ import { ReservationsEmpty } from "@/components/reservations/reservations-empty"
 import { ReservationsList } from "@/components/reservations/reservations-list"
 import { ReservationsTable } from "@/components/reservations/reservations-table"
 import { CardContent, CardFooter } from "@/components/ui/card"
+
 import type { Reservation } from "@/lib/reservation"
+import { RESERVATIONS_PAGE_SIZE } from "@/lib/reservation-filters"
 import { cn } from "@/lib/utils"
 
 export type Results = {
@@ -82,21 +84,33 @@ export function ReservationsResults({
   )
 }
 
-/** Mismas filas y mismo pie que el resultado real: no mueve el layout. */
-export function ResultsFallback() {
+/**
+ * Los altos salen de la tabla real, no de un cálculo a ojo: la cabecera mide
+ * `h-10` y cada fila `h-[78px]`, y se pintan tantas filas como trae una
+ * página (`RESERVATIONS_PAGE_SIZE`). Si alguno de esos valores cambia, este
+ * esqueleto deja de coincidir, así que van juntos a propósito.
+ */
+export function ResultsFallback({ rows = RESERVATIONS_PAGE_SIZE }: { rows?: number }) {
   return (
     <>
       <CardContent className="min-h-0 flex-1 overflow-y-auto px-0">
-        {["a", "b", "c", "d", "e", "f"].map((row) => (
-          <div key={row} className="flex h-[68px] items-center gap-4 px-5 even:bg-row-alt">
-            <div className="h-4 w-12 animate-pulse rounded-full bg-muted" />
-            <div className="h-4 w-48 animate-pulse rounded-full bg-muted" />
+        {/* La franja de encabezados de columna, que también ocupa espacio. */}
+        <div className="h-10 bg-muted" />
+        {Array.from({ length: rows }, (_, index) => (
+          <div
+            // biome-ignore lint/suspicious/noArrayIndexKey: son huecos, no datos
+            key={index}
+            className="flex h-[78px] items-center gap-4 px-5 even:bg-row-alt"
+          >
+            <div className="h-4 w-20 animate-pulse rounded-full bg-muted" />
+            <div className="h-4 w-56 animate-pulse rounded-full bg-muted" />
             <div className="ml-auto h-4 w-16 animate-pulse rounded-full bg-muted" />
           </div>
         ))}
       </CardContent>
       <CardFooter className="h-14 shrink-0 justify-between bg-surface-muted px-4 py-2 sm:px-6">
         <div className="h-4 w-28 animate-pulse rounded-full bg-muted" />
+        <div className="h-8 w-64 animate-pulse rounded-lg bg-muted" />
       </CardFooter>
     </>
   )

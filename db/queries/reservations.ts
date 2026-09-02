@@ -10,11 +10,10 @@ import { agents, drivers, guides, hotels, reservations, tours } from "@/db/schem
 import { tags } from "@/lib/cache-tags"
 import { ALL, UNASSIGNED } from "@/lib/filter-options"
 import { medir } from "@/lib/observe"
-import type { ReservationFilters } from "@/lib/reservation-filters"
+import { RESERVATIONS_PAGE_SIZE, type ReservationFilters } from "@/lib/reservation-filters"
 import { addDays, operationToday } from "@/lib/today"
 
-/** Cuántas filas trae una página de la tabla de Reservas. */
-export const RESERVATIONS_PAGE_SIZE = 8
+export { RESERVATIONS_PAGE_SIZE } from "@/lib/reservation-filters"
 
 /** El pendiente operativo se calcula en SQL para poder filtrar por él. */
 function pendingCondition(pending: ReservationFilters["pending"]) {

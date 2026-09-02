@@ -36,15 +36,9 @@ export function TodayStats({ promise, filters, activeIssue, page }: BlockProps) 
   return <OperationStats reservations={inContext} counts={counts} />
 }
 
-export function StatsFallback() {
-  return (
-    <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
-      {["a", "b", "c", "d"].map((stat) => (
-        <div key={stat} className="h-[68px] animate-pulse rounded-xl bg-muted" />
-      ))}
-    </div>
-  )
-}
+// Las mismas cuatro tarjetas que Reservas: ya están medidas contra las
+// reales, no tiene sentido tener dos versiones que se desincronicen.
+export { StatsSkeleton as StatsFallback } from "@/components/reservations/reservations-skeleton"
 
 export function TodayCount({ promise, filters, activeIssue, page }: BlockProps) {
   const { filtered, pax } = deriveOperation({
@@ -133,20 +127,30 @@ export function TodayList({
   )
 }
 
+/**
+ * Alto y cantidad tomados de la tabla real de Hoy: `h-[86px]` por fila y
+ * `OPERATION_PAGE_SIZE` filas, más la franja de encabezados de columna.
+ */
 export function ListFallback() {
   return (
     <>
       <CardContent className="min-h-0 flex-1 overflow-y-auto px-0">
-        {["a", "b", "c", "d", "e", "f"].map((row) => (
-          <div key={row} className="flex h-[68px] items-center gap-4 px-5 even:bg-row-alt">
-            <div className="h-4 w-12 animate-pulse rounded-full bg-muted" />
-            <div className="h-4 w-48 animate-pulse rounded-full bg-muted" />
+        <div className="h-10 bg-muted" />
+        {Array.from({ length: OPERATION_PAGE_SIZE }, (_, index) => (
+          <div
+            // biome-ignore lint/suspicious/noArrayIndexKey: son huecos, no datos
+            key={index}
+            className="flex h-[86px] items-center gap-4 px-5 even:bg-row-alt"
+          >
+            <div className="h-4 w-20 animate-pulse rounded-full bg-muted" />
+            <div className="h-4 w-56 animate-pulse rounded-full bg-muted" />
             <div className="ml-auto h-4 w-16 animate-pulse rounded-full bg-muted" />
           </div>
         ))}
       </CardContent>
       <CardFooter className="h-14 shrink-0 justify-between bg-surface-muted px-4 py-2 sm:px-6">
         <div className="h-4 w-28 animate-pulse rounded-full bg-muted" />
+        <div className="h-8 w-64 animate-pulse rounded-lg bg-muted" />
       </CardFooter>
     </>
   )

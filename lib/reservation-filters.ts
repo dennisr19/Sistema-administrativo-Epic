@@ -1,3 +1,7 @@
+/** Cuántas filas trae una página de la tabla de Reservas. Vive aquí y no
+ * en la consulta porque el esqueleto también la necesita, y ese es cliente. */
+export const RESERVATIONS_PAGE_SIZE = 8
+
 import { countEntityFilters, defaultEntityFilters, type EntityFilters } from "@/lib/filter-options"
 import type { OperationalIssue } from "@/lib/reservation"
 
