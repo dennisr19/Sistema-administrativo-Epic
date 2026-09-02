@@ -1,9 +1,10 @@
 "use server"
 
-import { revalidatePath } from "next/cache"
+import { refresh, updateTag } from "next/cache"
 
 import { saveCatalogEntity, toggleCatalogEntity } from "@/db/mutations/catalog"
 import { requireSession } from "@/lib/auth/server"
+import { tags } from "@/lib/cache-tags"
 import type { EntityActionState } from "@/lib/entity-action-state"
 import { entityInputSchema, entityReferenceSchema, fieldErrors } from "@/lib/entity-validation"
 
@@ -33,7 +34,8 @@ export async function saveEntityAction(
   try {
     const rows = await saveCatalogEntity(organizationId, parsed.data)
     if (!rows.length) return { status: "error", message: "El registro ya no existe." }
-    revalidatePath("/configuracion")
+    updateTag(tags.catalogs(organizationId))
+    refresh()
     return { status: "success", message: "Cambios guardados." }
   } catch (error) {
     return { status: "error", message: databaseMessage(error) }
@@ -52,7 +54,8 @@ export async function toggleEntityAction(
   try {
     const rows = await toggleCatalogEntity(organizationId, parsed.data.kind, parsed.data.id)
     if (!rows.length) return { status: "error", message: "El registro ya no existe." }
-    revalidatePath("/configuracion")
+    updateTag(tags.catalogs(organizationId))
+    refresh()
     return { status: "success" }
   } catch {
     return { status: "error", message: "No pudimos cambiar el estado." }

@@ -4,8 +4,10 @@ import { and, asc, count, desc, eq, gte, isNull, like, lte, or, type SQL, sql } 
 import { cache } from "react"
 
 import { db } from "@/db"
+import { cachedPerOrganization } from "@/db/cached"
 import { reservationColumns, toReservation } from "@/db/queries/reservation-row"
 import { agents, drivers, guides, hotels, reservations, tours } from "@/db/schema"
+import { tags } from "@/lib/cache-tags"
 import { ALL, UNASSIGNED } from "@/lib/filter-options"
 import type { ReservationFilters } from "@/lib/reservation-filters"
 import { addDays, operationToday } from "@/lib/today"
@@ -148,18 +150,28 @@ export const findReservation = cache(async (organizationId: string, id: string) 
   return toReservation(row, today, addDays(today, 1))
 })
 
-/** El rango que cubre el historial, para el subtítulo de la pantalla. */
-export const reservationCoverage = cache(async (organizationId: string) => {
-  const client = await db()
-  const [row] = await client
-    .select({
-      oldest: sql<string | null>`min(${reservations.date})`,
-      newest: sql<string | null>`max(${reservations.date})`,
-    })
-    .from(reservations)
-    .where(eq(reservations.organizationId, organizationId))
+/**
+ * El rango que cubre el historial, para el subtítulo de la pantalla. Solo se
+ * mueve cuando se crea o borra una reserva, así que se cachea por etiqueta.
+ */
+export const reservationCoverage = cache((organizationId: string) => {
+  return cachedPerOrganization(
+    "reservation-coverage",
+    organizationId,
+    async () => {
+      const client = await db()
+      const [row] = await client
+        .select({
+          oldest: sql<string | null>`min(${reservations.date})`,
+          newest: sql<string | null>`max(${reservations.date})`,
+        })
+        .from(reservations)
+        .where(eq(reservations.organizationId, organizationId))
 
-  return { oldest: row?.oldest ?? null, newest: row?.newest ?? null }
+      return { oldest: row?.oldest ?? null, newest: row?.newest ?? null }
+    },
+    { tags: [tags.reservations(organizationId)], revalidate: 3600 },
+  )
 })
 
 /**
@@ -207,8 +219,23 @@ export const listOperationPeriod = cache(
  * Salidas de hoy y mañana con algo sin resolver, que es lo que la campana
  * considera un aviso. Se piden solo esos dos días, no el historial entero.
  */
-export const upcomingReservations = cache(async (organizationId: string) => {
+export const upcomingReservations = cache((organizationId: string) => {
   const today = operationToday()
+  return cachedPerOrganization(
+    "upcoming-reservations",
+    organizationId,
+    () => loadUpcoming(organizationId, today),
+    {
+      tags: [tags.reservations(organizationId)],
+      // `today` va en la llave: si no, al cruzar la medianoche la entrada
+      // cacheada seguiría anunciando las salidas de ayer.
+      key: [today],
+      revalidate: 300,
+    },
+  )
+})
+
+async function loadUpcoming(organizationId: string, today: string) {
   const tomorrow = addDays(today, 1)
 
   const client = await db()
@@ -237,7 +264,7 @@ export const upcomingReservations = cache(async (organizationId: string) => {
     .orderBy(asc(reservations.date), asc(reservations.time))
 
   return { reservations: rows.map((row) => toReservation(row, today, tomorrow)), today }
-})
+}
 
 /** Búsqueda de la paleta de comandos: pocas coincidencias, resueltas en SQL. */
 export async function searchReservations(organizationId: string, term: string, limit: number) {

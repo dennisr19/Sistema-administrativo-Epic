@@ -4,8 +4,10 @@ import { and, asc, eq, gte, lte } from "drizzle-orm"
 import { cache } from "react"
 
 import { db } from "@/db"
+import { cachedPerOrganization } from "@/db/cached"
 import { reservationColumns, toReservation } from "@/db/queries/reservation-row"
 import { agents, drivers, guides, hotels, reservations, tours } from "@/db/schema"
+import { tags } from "@/lib/cache-tags"
 import { computeReport, previousPeriod } from "@/lib/report-metrics"
 import { addDays, operationToday } from "@/lib/today"
 
@@ -14,7 +16,26 @@ import { addDays, operationToday } from "@/lib/today"
  * función de siempre. Es un año de operación como mucho: bajarlo a SQL sería
  * reescribir rankings y comparaciones sin ganar nada todavía.
  */
-export const getReport = cache(async (organizationId: string, from: string, to: string) => {
+/**
+ * Semi-dinámico: el informe de un periodo cerrado no cambia salvo que alguien
+ * toque una reserva de ese periodo, y eso lo cubre la etiqueta. Los cinco
+ * minutos son el techo para el periodo en curso.
+ */
+export const getReport = cache((organizationId: string, from: string, to: string) => {
+  return cachedPerOrganization(
+    "report",
+    organizationId,
+    () => loadReport(organizationId, from, to),
+    {
+      tags: [tags.reservations(organizationId)],
+      // El rango va en la llave: cada periodo es una entrada distinta.
+      key: [from, to],
+      revalidate: 300,
+    },
+  )
+})
+
+async function loadReport(organizationId: string, from: string, to: string) {
   const previous = previousPeriod(from, to)
   const client = await db()
 
@@ -40,4 +61,4 @@ export const getReport = cache(async (organizationId: string, from: string, to: 
   const all = rows.map((row) => toReservation(row, today, addDays(today, 1)))
 
   return computeReport(all, from, to)
-})
+}

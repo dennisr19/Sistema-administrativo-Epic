@@ -1,10 +1,11 @@
 "use server"
 
-import { revalidatePath } from "next/cache"
+import { refresh, updateTag } from "next/cache"
 import { redirect } from "next/navigation"
 
 import { saveReservation } from "@/db/mutations/reservations"
 import { requireSession } from "@/lib/auth/server"
+import { tags } from "@/lib/cache-tags"
 import { type ReservationFormState, reservationInputSchema } from "@/lib/reservation-input"
 
 export async function saveReservationAction(
@@ -37,8 +38,17 @@ export async function saveReservationAction(
 
   if (!saved.length) return { status: "error", message: "La reserva ya no existe." }
 
-  // Toca la operación del día, el historial y los reportes.
-  revalidatePath("/", "layout")
+  // Una sola etiqueta cubre todo lo cacheado que deriva de reservas: los
+  // reportes, la cobertura del historial, los avisos de la campana y los
+  // conteos de uso de Configuración.
+  //
+  // `updateTag` y no `revalidateTag`: dentro de una Server Action es el que
+  // da lectura de la propia escritura, así que quien acaba de guardar ve su
+  // cambio de una y no cuando expire la entrada.
+  updateTag(tags.reservations(organizationId))
+  // Y el Router Cache del cliente, que guarda datos dinámicos que la etiqueta
+  // no toca: sin esto la lista podría pintarse sin la reserva recién creada.
+  refresh()
   // El redirect corta la ejecución: el form nunca ve un estado de "éxito"
   // que mostrar. La bandera en la URL es lo que le dice a la lista, ya del
   // otro lado, que muestre la confirmación — la lee una vez y la limpia.

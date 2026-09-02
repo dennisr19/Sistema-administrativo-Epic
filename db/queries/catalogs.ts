@@ -4,17 +4,32 @@ import { asc, eq } from "drizzle-orm"
 import { cache } from "react"
 
 import { db } from "@/db"
+import { cachedPerOrganization } from "@/db/cached"
 import { agents, drivers, guides, hotels, mealOptions, tours } from "@/db/schema"
+import { tags } from "@/lib/cache-tags"
 import type { EntityKind, EntityRecord } from "@/lib/entities"
 
 export type Catalogs = Record<EntityKind, EntityRecord[]>
 
+/** Una hora de techo: en la práctica muere antes, por etiqueta. */
+const CATALOGS_TTL = 3600
+
 /**
- * Los seis catálogos completos. Son un par de centenares de filas y alimentan
- * los filtros y los desplegables del formulario, así que viajan enteros al
- * cliente una sola vez por navegación.
+ * Los seis catálogos completos. Son datos de referencia: cambian cuando
+ * alguien edita Configuración y no antes, así que se cachean fuerte y se
+ * invalidan por etiqueta desde las acciones de catálogo.
+ *
+ * `cache` de React sigue encima: deduplica dentro del mismo request; el de
+ * abajo es el que sobrevive entre requests.
  */
-export const getCatalogs = cache(async (organizationId: string): Promise<Catalogs> => {
+export const getCatalogs = cache((organizationId: string): Promise<Catalogs> => {
+  return cachedPerOrganization("catalogs", organizationId, () => loadCatalogs(organizationId), {
+    tags: [tags.catalogs(organizationId)],
+    revalidate: CATALOGS_TTL,
+  })
+})
+
+async function loadCatalogs(organizationId: string): Promise<Catalogs> {
   const client = await db()
   const [tourRows, guideRows, driverRows, hotelRows, agentRows, mealRows] = await Promise.all([
     client
@@ -91,4 +106,4 @@ export const getCatalogs = cache(async (organizationId: string): Promise<Catalog
     })),
     meals: mealRows.map((row) => ({ id: row.id, name: row.name, active: row.active })),
   }
-})
+}

@@ -12,8 +12,23 @@
   },
   "vars": {
     "BETTER_AUTH_URL": "https://sistema-administrativo-epic.dennis-cc7.workers.dev",
-    "RESEND_FROM": "Epic Adventures <no-reply@epicadventurescr.com>"
+    "RESEND_FROM": "Epic Adventures <no-reply@epicadventurescr.com>",
+    // Separa las llaves del cache incremental de las del tag cache, que
+    // comparten el mismo namespace.
+    "NEXT_INC_CACHE_KV_PREFIX": "inc"
   },
+  // Las dos mitades del Data Cache de Next. Mismo namespace `epic-cache`:
+  // cada una prefija sus llaves y no se pisan.
+  "kv_namespaces": [
+    {
+      "binding": "NEXT_INC_CACHE_KV",
+      "id": "819bb78d87f34cd3b9b1040f9ac49e19"
+    },
+    {
+      "binding": "NEXT_TAG_CACHE_KV",
+      "id": "819bb78d87f34cd3b9b1040f9ac49e19"
+    }
+  ],
   "secrets": {
     "required": ["BETTER_AUTH_SECRET", "RESEND_API_KEY"]
   },

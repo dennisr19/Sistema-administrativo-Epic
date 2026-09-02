@@ -4,7 +4,9 @@ import { and, asc, count, eq, sql } from "drizzle-orm"
 import { cache } from "react"
 
 import { type Database, db } from "@/db"
+import { cachedPerOrganization } from "@/db/cached"
 import { agents, drivers, guides, hotels, mealOptions, reservations, tours } from "@/db/schema"
+import { tags } from "@/lib/cache-tags"
 import type { EntityKind, EntityRecord, SettingsData } from "@/lib/entities"
 
 type ActiveData = Pick<SettingsData, "records" | "usage">
@@ -219,14 +221,32 @@ async function activeCatalog(
  * la pesada. Separadas, cada bloque de la pantalla suspende por su cuenta y
  * el menú no espera a la tabla.
  */
-export const getCatalogCounts = cache(async (organizationId: string) => {
-  const client = await db()
-  return catalogCounts(client, organizationId)
+/**
+ * Las dos llevan las dos etiquetas: las filas salen de los catálogos, pero el
+ * conteo de uso sale de las reservas. Editar cualquiera de los dos lados tiene
+ * que invalidar esto.
+ */
+const catalogTags = (organizationId: string) => [
+  tags.catalogs(organizationId),
+  tags.reservations(organizationId),
+]
+
+export const getCatalogCounts = cache((organizationId: string) => {
+  return cachedPerOrganization(
+    "catalog-counts",
+    organizationId,
+    async () => catalogCounts(await db(), organizationId),
+    { tags: catalogTags(organizationId), revalidate: 3600 },
+  )
 })
 
 export const getActiveCatalog = cache(
-  async (organizationId: string, kind: EntityKind): Promise<ActiveData> => {
-    const client = await db()
-    return activeCatalog(client, organizationId, kind)
+  (organizationId: string, kind: EntityKind): Promise<ActiveData> => {
+    return cachedPerOrganization(
+      "active-catalog",
+      organizationId,
+      async () => activeCatalog(await db(), organizationId, kind),
+      { tags: catalogTags(organizationId), key: [kind], revalidate: 3600 },
+    )
   },
 )

@@ -1,7 +1,7 @@
 "use server"
 
 import { eq } from "drizzle-orm"
-import { revalidatePath } from "next/cache"
+import { refresh, updateTag } from "next/cache"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { z } from "zod"
@@ -9,6 +9,7 @@ import { z } from "zod"
 import { db } from "@/db"
 import { organizations } from "@/db/schema"
 import { getAuth, requireSession } from "@/lib/auth/server"
+import { tags } from "@/lib/cache-tags"
 import type { ProfileState } from "@/lib/profile-action-state"
 
 const profileSchema = z.object({
@@ -52,8 +53,10 @@ export async function updateProfileAction(
     return { status: "error", message: "No pudimos guardar los cambios. Intenta nuevamente." }
   }
 
-  // El nombre se ve en la barra lateral de todas las pantallas.
-  revalidatePath("/", "layout")
+  // El nombre se ve en la barra lateral, que pinta el layout: además de
+  // soltar la entrada cacheada hay que refrescar el cliente.
+  updateTag(tags.organization(organizationId))
+  refresh()
   return { status: "success", message: "Cambios guardados." }
 }
 
