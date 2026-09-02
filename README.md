@@ -1,4 +1,4 @@
-# epic-ops
+# Sistema Administrativo Epic
 
 Herramienta ligera para operar tours. Cuatro pantallas, `Hoy`, `Reservas`, `Reportes` y
 `Configuración`, sobre Next.js, React, shadcn con Base UI, Tailwind CSS y Tabler Icons.

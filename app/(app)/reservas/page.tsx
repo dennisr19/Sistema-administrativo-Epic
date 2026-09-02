@@ -13,7 +13,7 @@ import { requireSession } from "@/lib/auth/server"
 import { parseReservationParams, type ReservationParams } from "@/lib/reservation-search-params"
 
 export const metadata: Metadata = {
-  title: "Reservas | epic-ops",
+  title: "Reservas | Sistema Administrativo Epic",
 }
 
 export default async function ReservationsPage({

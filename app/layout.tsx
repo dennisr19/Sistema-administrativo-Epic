@@ -9,7 +9,7 @@ const geist = Geist({
 })
 
 export const metadata: Metadata = {
-  title: "Hoy | epic-ops",
+  title: "Hoy | Sistema Administrativo Epic",
   description: "Operación diaria de tours, clara y accionable.",
 }
 

@@ -4,7 +4,7 @@ export const entityKinds = ["tours", "guides", "drivers", "hotels", "agents", "m
 
 export type EntityKind = (typeof entityKinds)[number]
 
-/** Los campos siguen los de la app actual de epic-ops, tipo por tipo. */
+/** Los campos siguen los de la app actual de Sistema Administrativo Epic, tipo por tipo. */
 export type EntityRecord = {
   id: string
   name: string

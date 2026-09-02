@@ -18,9 +18,11 @@ export function AppMark({ large = false }: { large?: boolean }) {
 
 export function AppLogo() {
   return (
-    <div className="flex items-center gap-2.5">
+    <div className="flex min-w-0 items-center gap-2.5">
       <AppMark />
-      <span className="text-[19px] font-semibold tracking-[-0.03em]">epic-ops</span>
+      <span className="truncate text-[19px] font-semibold tracking-[-0.03em]">
+        Sistema Administrativo Epic
+      </span>
     </div>
   )
 }

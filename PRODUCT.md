@@ -1,4 +1,4 @@
-# epic-ops
+# Sistema Administrativo Epic
 
 <!-- impeccable:product-schema 1 -->
 
@@ -9,7 +9,9 @@
 - Estado del slice: implementado y verificado localmente; pendiente de aprobación visual del usuario.
 - Aprobación visual: pendiente.
 - Arquitectura de producción: recomendada, pero todavía no aprobada.
-- Nombre confirmado por el usuario: `epic-ops`.
+- Nombre comercial y técnico confirmado: `Sistema Administrativo Epic`. El repo y el
+  workspace de Cloudflare nacieron bajo el nombre de trabajo `epic-ops`; ese nombre quedó
+  reemplazado en package.json, wrangler.jsonc y en toda la UI.
 - Nombre del usuario de operaciones para el prototipo: `Dennis Reyes`.
 - El nombre de carpeta `epicadventures` incluido al final del brief original queda reemplazado por
   la instrucción posterior y más específica: `epic-ops`.
@@ -129,7 +131,7 @@ No se construirá un sistema RBAC enterprise en la primera versión.
 
 ## Propósito
 
-`epic-ops` es un workspace operativo de tours. Su entidad central es la reserva y todo lo demás
+`Sistema Administrativo Epic` es un workspace operativo de tours. Su entidad central es la reserva y todo lo demás
 existe para ayudar a reservar, asignar, operar, consultar y exportar con rapidez.
 
 No es un CRM, un ERP turístico reducido ni un dashboard administrativo. Debe ayudar a:
@@ -573,7 +575,7 @@ permanentemente.
 - Los seis tipos comparten una sola definición (`lib/entities.ts`) con sus campos, y una tabla,
   una lista mobile y un formulario genéricos los renderizan. Agregar un tipo es agregar una
   definición.
-- Los campos siguen los de la app actual de epic-ops: tours con descripción, tipo y precio; guías
+- Los campos siguen los de la app actual de Sistema Administrativo Epic: tours con descripción, tipo y precio; guías
   con teléfono y email; choferes con teléfono y licencia; hoteles con teléfono, dirección y email;
   agentes con teléfono, empresa y email; alimentación solo con nombre.
 - La tabla solo aparece desde 1400 px, que es donde realmente cabe. Por debajo, incluido tablet,
@@ -997,7 +999,6 @@ alimentación y el detalle de entradas por pasaporte. El esquema los tiene, lleg
 
 - Aprobación de la primera pantalla.
 - Stack final y destino de despliegue.
-- Nombre comercial visible frente al nombre técnico `epic-ops`.
 - Logo e identidad de marca.
 - Zona horaria por organización. La demo usa `America/Costa_Rica`.
 - Moneda y reglas de formato por organización. La demo usa USD.

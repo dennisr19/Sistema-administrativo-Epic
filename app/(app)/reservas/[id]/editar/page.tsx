@@ -8,7 +8,7 @@ import { findReservation } from "@/db/queries/reservations"
 import { requireSession } from "@/lib/auth/server"
 
 export const metadata: Metadata = {
-  title: "Editar reserva | epic-ops",
+  title: "Editar reserva | Sistema Administrativo Epic",
 }
 
 export default async function EditReservationPage({ params }: PageProps<"/reservas/[id]/editar">) {

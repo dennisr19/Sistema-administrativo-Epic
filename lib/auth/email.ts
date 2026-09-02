@@ -4,7 +4,7 @@ type OtpEmail = { to: string; code: string; from: string; apiKey: string; minute
 
 const body = (code: string, minutes: number) => `
   <div style="font-family:ui-sans-serif,system-ui,sans-serif;max-width:420px;margin:0 auto;padding:32px 24px">
-    <p style="margin:0 0 24px;font-size:15px;color:#556376">Tu código para entrar a epic-ops</p>
+    <p style="margin:0 0 24px;font-size:15px;color:#556376">Tu código para entrar a Sistema Administrativo Epic</p>
     <p style="margin:0 0 24px;font-size:36px;font-weight:600;letter-spacing:0.12em;color:#192230">${code}</p>
     <p style="margin:0;font-size:14px;color:#556376">Vence en ${minutes} minutos. Si no lo pediste, ignora este correo.</p>
   </div>`
@@ -27,7 +27,7 @@ export async function sendOtpEmail({ to, code, from, apiKey, minutes }: OtpEmail
     body: JSON.stringify({
       from,
       to,
-      subject: `${code} es tu código de epic-ops`,
+      subject: `${code} es tu código de Sistema Administrativo Epic`,
       html: body(code, minutes),
     }),
   })

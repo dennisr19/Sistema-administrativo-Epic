@@ -10,7 +10,7 @@ import { organizations } from "@/db/schema"
 import { requireSession } from "@/lib/auth/server"
 
 export const metadata: Metadata = {
-  title: "Perfil | epic-ops",
+  title: "Perfil | Sistema Administrativo Epic",
 }
 
 export default async function ProfilePage() {

@@ -8,7 +8,7 @@ import { requireSession } from "@/lib/auth/server"
 import { entityKindOf } from "@/lib/entities"
 
 export const metadata: Metadata = {
-  title: "Configuración | epic-ops",
+  title: "Configuración | Sistema Administrativo Epic",
 }
 
 export default async function SettingsPage({

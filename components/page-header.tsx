@@ -34,7 +34,7 @@ export function PageHeader({ title, subtitle, action, onNewReservation }: PageHe
         <Button
           variant="outline"
           className="h-11 justify-start gap-2.5 border-input bg-card px-3.5 text-[15px] font-normal text-muted-foreground hover:bg-card xl:w-[240px]"
-          aria-label="Buscar en epic-ops"
+          aria-label="Buscar en Sistema Administrativo Epic"
           onClick={palette.open}
         >
           <IconSearch className="text-muted-foreground" />

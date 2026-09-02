@@ -8,7 +8,7 @@ import { requireSession } from "@/lib/auth/server"
 import { type Preset, rangeOf } from "@/lib/report-period"
 
 export const metadata: Metadata = {
-  title: "Reportes | epic-ops",
+  title: "Reportes | Sistema Administrativo Epic",
 }
 
 const presets: Preset[] = ["month", "previous", "quarter", "year", "custom"]

@@ -5,12 +5,12 @@ import { SignInForm } from "@/components/auth/sign-in-form"
 import { getSession } from "@/lib/auth/server"
 
 export const metadata: Metadata = {
-  title: "Entra a epic-ops",
+  title: "Entra a Sistema Administrativo Epic",
 }
 
 const notices: Record<string, string> = {
   "sin-organizacion":
-    "Tu cuenta existe pero todavía no pertenece a ninguna organización. Pídele acceso a quien administra epic-ops.",
+    "Tu cuenta existe pero todavía no pertenece a ninguna organización. Pídele acceso a quien administra Sistema Administrativo Epic.",
 }
 
 export default async function SignInPage({

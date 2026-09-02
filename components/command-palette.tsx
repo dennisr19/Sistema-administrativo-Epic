@@ -79,7 +79,7 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0 z-50 bg-foreground/25 duration-100 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0" />
         <Dialog.Popup className="fixed top-24 left-1/2 z-50 w-[min(640px,calc(100vw-2rem))] -translate-x-1/2 overflow-hidden rounded-3xl bg-popover text-popover-foreground ring-1 ring-foreground/10 duration-100 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95">
-          <Dialog.Title className="sr-only">Buscar en epic-ops</Dialog.Title>
+          <Dialog.Title className="sr-only">Buscar en Sistema Administrativo Epic</Dialog.Title>
 
           <div className="flex h-14 items-center gap-3 border-b px-5">
             <IconSearch className="size-5 shrink-0 text-muted-foreground" />
@@ -89,7 +89,7 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
               onChange={(event) => setQuery(event.target.value)}
               onKeyDown={onKeyDown}
               placeholder="Busca una reserva, un hotel, un guía"
-              aria-label="Buscar en epic-ops"
+              aria-label="Buscar en Sistema Administrativo Epic"
               className="h-full min-w-0 flex-1 bg-transparent text-[15px] outline-none placeholder:text-muted-foreground"
             />
             <kbd className="hidden shrink-0 rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground sm:block">
