@@ -92,7 +92,9 @@ export function ReservationsView({
             onValueChange={(status: StatusFilter) => setFilters({ status })}
             ariaLabel="Estado de la reserva"
           />
-          <div className="flex items-center gap-2">
+          {/* ml-auto: en tablet este grupo se envuelve a su propia fila, donde
+          justify-between ya no tiene con quién repartir espacio. */}
+          <div className="ml-auto flex items-center gap-2">
             <DateRangeControl
               from={filters.from}
               to={filters.to}
