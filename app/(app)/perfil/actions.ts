@@ -38,15 +38,19 @@ export async function updateProfileAction(
 
   const [auth, client] = await Promise.all([getAuth(), db()])
 
-  await Promise.all([
-    // Por la API de Better Auth, no por Drizzle: así refresca la sesión que
-    // viaja cacheada en la cookie y el nombre nuevo se ve de inmediato.
-    auth.api.updateUser({ body: { name: parsed.data.name }, headers: await headers() }),
-    client
-      .update(organizations)
-      .set({ name: parsed.data.organizationName })
-      .where(eq(organizations.id, organizationId)),
-  ])
+  try {
+    await Promise.all([
+      // Por la API de Better Auth, no por Drizzle: así refresca la sesión que
+      // viaja cacheada en la cookie y el nombre nuevo se ve de inmediato.
+      auth.api.updateUser({ body: { name: parsed.data.name }, headers: await headers() }),
+      client
+        .update(organizations)
+        .set({ name: parsed.data.organizationName })
+        .where(eq(organizations.id, organizationId)),
+    ])
+  } catch {
+    return { status: "error", message: "No pudimos guardar los cambios. Intenta nuevamente." }
+  }
 
   // El nombre se ve en la barra lateral de todas las pantallas.
   revalidatePath("/", "layout")
