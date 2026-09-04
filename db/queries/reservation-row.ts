@@ -8,6 +8,7 @@ export const reservationColumns = {
   id: reservations.id,
   code: reservations.code,
   date: reservations.date,
+  createdAt: reservations.createdAt,
   time: reservations.time,
   status: reservations.status,
   customerName: reservations.customerName,
@@ -43,11 +44,13 @@ export function toReservation(row: Row, today: string, tomorrow: string): Reserv
   const driver = (row.driver as string | null) ?? null
   const paymentPending = Boolean(row.paymentPending)
   const date = String(row.date)
+  const createdAt = row.createdAt as Date
 
   return {
     id: String(row.id),
     code: String(row.code),
     date,
+    createdAt: createdAt.toISOString(),
     status: row.status as Reservation["status"],
     dayLabel: dayLabel(date, today, tomorrow),
     time: (row.time as string | null) ?? "",

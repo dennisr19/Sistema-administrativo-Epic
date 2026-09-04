@@ -36,3 +36,15 @@ export function formatLongDate(date: string) {
   const { weekday, day, month, year } = formatDate(date)
   return `${weekday} ${day} de ${month} de ${year}`
 }
+
+/** La fecha de alta sí es un instante; se presenta en la zona operativa de Costa Rica. */
+export function formatCreatedDate(timestamp: string) {
+  return new Intl.DateTimeFormat("es-CR", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "America/Costa_Rica",
+  })
+    .format(new Date(timestamp))
+    .replace(/\./g, "")
+}

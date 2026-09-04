@@ -86,7 +86,7 @@ export function ReservationsResults({
 
 /**
  * Los altos salen de la tabla real, no de un cálculo a ojo: la cabecera mide
- * `h-10` y cada fila `h-[78px]`, y se pintan tantas filas como trae una
+ * `h-10` y cada fila `h-[90px]`, y se pintan tantas filas como trae una
  * página (`RESERVATIONS_PAGE_SIZE`). Si alguno de esos valores cambia, este
  * esqueleto deja de coincidir, así que van juntos a propósito.
  */
@@ -100,7 +100,7 @@ export function ResultsFallback({ rows = RESERVATIONS_PAGE_SIZE }: { rows?: numb
           <div
             // biome-ignore lint/suspicious/noArrayIndexKey: son huecos, no datos
             key={index}
-            className="flex h-[78px] items-center gap-4 px-5 even:bg-row-alt"
+            className="flex h-[90px] items-center gap-4 px-5 even:bg-row-alt"
           >
             <div className="h-4 w-20 animate-pulse rounded-full bg-muted" />
             <div className="h-4 w-56 animate-pulse rounded-full bg-muted" />

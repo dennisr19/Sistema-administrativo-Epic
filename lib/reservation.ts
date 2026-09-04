@@ -13,6 +13,8 @@ export type Reservation = {
   code: string
   /** ISO `yyyy-mm-dd`. */
   date: string
+  /** ISO 8601 del momento en que se registró la reserva. */
+  createdAt: string
   status: ReservationStatus
   dayLabel: string
   time: string

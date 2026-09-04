@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { formatDate } from "@/lib/format-date"
+import { formatCreatedDate, formatDate } from "@/lib/format-date"
 import type { Reservation } from "@/lib/reservation"
 
 type ReservationsTableProps = {
@@ -53,11 +53,12 @@ export function ReservationsTable({ reservations, onSelect }: ReservationsTableP
         <TableBody>
           {reservations.map((reservation) => {
             const date = formatDate(reservation.date)
+            const createdDate = formatCreatedDate(reservation.createdAt)
 
             return (
               <TableRow
                 key={reservation.id}
-                className="h-[78px] cursor-pointer border-b-0 bg-card even:bg-row-alt hover:bg-row-hover focus-visible:bg-row-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
+                className="h-[90px] cursor-pointer border-b-0 bg-card even:bg-row-alt hover:bg-row-hover focus-visible:bg-row-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
                 tabIndex={0}
                 onClick={() => onSelect(reservation)}
                 onKeyDown={(event) => openWithKeyboard(event, reservation)}
@@ -78,9 +79,16 @@ export function ReservationsTable({ reservations, onSelect }: ReservationsTableP
                       <span className="block truncate text-[15px] font-semibold">
                         {reservation.tour}
                       </span>
-                      <span className="mt-1 flex min-w-0 items-baseline gap-2.5 text-[13px] text-muted-foreground">
-                        <span className="truncate">{reservation.client}</span>
-                        <span className="shrink-0 tabular-nums">{reservation.code}</span>
+                      <span className="mt-1 flex min-w-0 items-baseline gap-2.5">
+                        <span className="truncate text-[16px] font-semibold text-foreground">
+                          {reservation.client}
+                        </span>
+                        <span className="shrink-0 text-[13px] font-normal tabular-nums text-muted-foreground">
+                          {reservation.code}
+                        </span>
+                      </span>
+                      <span className="mt-0.5 block text-[12px] text-muted-foreground">
+                        Creada {createdDate}
                       </span>
                     </span>
                   </div>
