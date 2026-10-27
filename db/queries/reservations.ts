@@ -6,7 +6,17 @@ import { cache } from "react"
 import { db } from "@/db"
 import { cachedPerOrganization } from "@/db/cached"
 import { reservationColumns, toReservation } from "@/db/queries/reservation-row"
-import { agents, drivers, guides, hotels, reservations, tours } from "@/db/schema"
+import {
+  agents,
+  drivers,
+  guides,
+  hotels,
+  mealOptions,
+  reservationMeals,
+  reservations,
+  reservationTickets,
+  tours,
+} from "@/db/schema"
 import { tags } from "@/lib/cache-tags"
 import { ALL, UNASSIGNED } from "@/lib/filter-options"
 import { medir } from "@/lib/observe"
@@ -159,8 +169,38 @@ export const findReservation = cache(async (organizationId: string, id: string) 
     .limit(1)
 
   if (!row) return null
+
+  // El formulario reescribe el detalle completo al guardar: si no se cargara
+  // aquí, editar cualquier campo borraría las entradas y la alimentación.
+  const [tickets, meals] = await Promise.all([
+    client
+      .select({
+        passport: reservationTickets.passport,
+        name: reservationTickets.name,
+        kind: reservationTickets.kind,
+      })
+      .from(reservationTickets)
+      .where(eq(reservationTickets.reservationId, id))
+      // Sin columna de orden, `rowid` conserva el orden en que se escribieron.
+      .orderBy(sql`${reservationTickets}.rowid`),
+    client
+      .select({ option: mealOptions.name, quantity: reservationMeals.quantity })
+      .from(reservationMeals)
+      .innerJoin(mealOptions, eq(reservationMeals.mealOptionId, mealOptions.id))
+      .where(eq(reservationMeals.reservationId, id))
+      .orderBy(sql`${reservationMeals}.rowid`),
+  ])
+
   const today = operationToday()
-  return toReservation(row, today, addDays(today, 1))
+  return {
+    ...toReservation(row, today, addDays(today, 1)),
+    tickets: tickets.map((ticket) => ({
+      passport: ticket.passport ?? "",
+      name: ticket.name ?? "",
+      kind: ticket.kind === "niño" ? ("niño" as const) : ("adulto" as const),
+    })),
+    meals,
+  }
 })
 
 /**
