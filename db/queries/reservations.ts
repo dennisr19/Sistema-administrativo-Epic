@@ -82,8 +82,6 @@ type ListOptions = {
   filters: ReservationFilters
   page?: number
   pageSize?: number
-  /** Ascendente para la operación del día, descendente para el historial. */
-  order?: "asc" | "desc"
 }
 
 /**
@@ -95,7 +93,6 @@ export async function listReservations({
   filters,
   page = 1,
   pageSize = RESERVATIONS_PAGE_SIZE,
-  order = "desc",
 }: ListOptions) {
   // Un rango invertido no es un error del sistema, es una consulta sin resultados.
   if (filters.from && filters.to && filters.from > filters.to) {
@@ -104,9 +101,8 @@ export async function listReservations({
 
   const client = await db()
   const where = conditions(organizationId, filters)
-  const direction = order === "asc" ? asc : desc
 
-  return medir("db:listReservations", () => runList(client, where, direction, page, pageSize), {
+  return medir("db:listReservations", () => runList(client, where, page, pageSize), {
     organizacion: organizationId,
     filas: (r) => r.reservations.length,
   })
@@ -115,10 +111,10 @@ export async function listReservations({
 async function runList(
   client: Awaited<ReturnType<typeof db>>,
   where: ReturnType<typeof conditions>,
-  direction: typeof asc,
   page: number,
   pageSize: number,
 ) {
+  const today = operationToday()
   const [rows, [totals]] = await Promise.all([
     client
       .select(reservationColumns)
@@ -129,7 +125,14 @@ async function runList(
       .leftJoin(drivers, eq(reservations.driverId, drivers.id))
       .leftJoin(agents, eq(reservations.agentId, agents.id))
       .where(where)
-      .orderBy(direction(reservations.date), asc(reservations.time))
+      // Lo que viene primero, de la salida más cercana a la más lejana; el
+      // historial después, de lo más reciente a lo más viejo.
+      .orderBy(
+        sql`case when ${reservations.date} >= ${today} then 0 else 1 end`,
+        sql`case when ${reservations.date} >= ${today} then ${reservations.date} end`,
+        desc(reservations.date),
+        asc(reservations.time),
+      )
       .limit(pageSize)
       .offset((Math.max(1, page) - 1) * pageSize),
     client
@@ -142,7 +145,6 @@ async function runList(
       .where(where),
   ])
 
-  const today = operationToday()
   const tomorrow = addDays(today, 1)
   const total = totals?.value ?? 0
 

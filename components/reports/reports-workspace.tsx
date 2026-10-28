@@ -7,6 +7,7 @@ import { ExportMenu } from "@/components/export-menu"
 import { PageHeader } from "@/components/page-header"
 import { ReportBlocks, ReportBlocksFallback } from "@/components/reports/report-blocks"
 import { ReportPeriodBar } from "@/components/reports/report-period-bar"
+import { ReportsNav } from "@/components/reports/reports-nav"
 import { DateRangeControl } from "@/components/reservations/date-range-control"
 import type { ReportMetrics } from "@/lib/report-metrics"
 import { type Preset, rangeOf } from "@/lib/report-period"
@@ -52,6 +53,7 @@ export function ReportsWorkspace({ reportPromise, preset, range }: ReportsWorksp
         <div className="grid gap-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h1 className="text-xl font-semibold tracking-[-0.025em] md:hidden">Reportes</h1>
+            <ReportsNav />
             <ReportPeriodBar preset={preset} onPreset={(next) => applyRange(next, rangeOf(next))} />
             <div className="flex items-center gap-2">
               {/* El mismo control de rango que Hoy y Reservas: una sola forma

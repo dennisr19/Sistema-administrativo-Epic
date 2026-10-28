@@ -125,6 +125,12 @@ export const reservations = sqliteTable(
      * sin depósito y cobrada a cuenta del agente.
      */
     paymentPending: integer("payment_pending", { mode: "boolean" }).notNull().default(false),
+    /**
+     * Cuándo se le liquidó al agente la comisión y al guía su pago por esta
+     * salida. Vacío es pendiente; la fecha sirve para saber en qué corte entró.
+     */
+    agentCommissionPaidAt: integer("agent_commission_paid_at", { mode: "timestamp_ms" }),
+    guidePaidAt: integer("guide_paid_at", { mode: "timestamp_ms" }),
     note: text("note"),
     status: text("status", { enum: reservationStatuses }).notNull().default("confirmed"),
     createdAt: integer("created_at", { mode: "timestamp_ms" })
